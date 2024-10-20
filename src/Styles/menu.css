@@ -1,0 +1,29 @@
+/* menu.css */
+
+.custom-card {
+    /* Customize card height, shadows, etc. */
+    min-height: 300px;
+    max-height: 400px;
+}
+
+.custom-card-body {
+    /* Adjust padding inside the card */
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+p {
+    font-size: 18px;
+    color: #7f8c8d;
+}
+.main-content{
+    margin-top: 100px;
+    margin-bottom: 50px;
+
+}

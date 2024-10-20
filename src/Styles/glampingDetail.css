@@ -1,0 +1,18 @@
+/* glampingDetail.css */
+
+.glamping-detail {
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+
+.custom-card {
+    /* Customize card height, shadows, etc. */
+    min-height: 300px;
+    max-height: 400px;
+}
+
+.custom-card-body {
+    /* Adjust padding inside the card */
+    padding: 20px;
+    text-align: center;
+}
