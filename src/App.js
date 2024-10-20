@@ -1,13 +1,15 @@
 import React from 'react';
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import TestCard from "./views/TestCard";
 
-import MainPage from "./components/mainPage/MainPage";
-import Navbar from "./components/Header/Navbar";
 
 function App() {
   return (
     <div>
-        <Navbar/>
-        <MainPage/>
+      <Header/>
+        <Footer />
+        {/*<TestCard/>*/}
     </div>
   );
 }
