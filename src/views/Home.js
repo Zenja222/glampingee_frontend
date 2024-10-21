@@ -2,6 +2,7 @@ import React from 'react';
 import MenuBtn from "../components/MenuBtn";
 
 function Home(){
+
     return (
         <div className='home-page'>
             <header className='h-100 min-vh-100 d-flex align-items-center text-light shadow'>
@@ -11,7 +12,7 @@ function Home(){
                             <h2 className='mb-0 text-black fw-bold'> Welcome To</h2>
                             <h1 className='mb-5 text-black fw-bold text-sm-start '>
                                 Estonian Glampings  </h1>
-                            <MenuBtn/>
+                             <MenuBtn/>
                         </div>
                     </div>
                 </div>

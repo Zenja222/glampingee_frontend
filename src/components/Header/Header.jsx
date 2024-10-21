@@ -5,10 +5,11 @@ import {Link, Route, Routes} from "react-router-dom";
 import Home from "../../views/Home";
 import Contact from "../../views/Contact";
 import Explore from "../../views/Explore";
-import Menu from "../../views/Menu";
 import About from "../../views/About";
 import GlampingDetail from "../../views/GlampingDetail";
 import Register from "../../views/Register";
+import Login from "../../views/Login";
+
 
 function Header() {
     return (
@@ -38,6 +39,7 @@ function Header() {
                 <Route path='/contact' element={<Contact />} />
                 <Route path='/explore' element={<Explore />} />
                 <Route path='/register' element={<Register />} />
+                <Route path='/login' element={<Login />} />
                 <Route path='/about' element={<About />} />
                 <Route path='/glamping/:id' element={<GlampingDetail />} />
             </Routes>

@@ -1,40 +1,26 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from "../firebase";
 
-function SignUp() {
+function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
-
-    const addUserToFirestore = async (user) => {
-        try {
-            await setDoc(doc(db, 'users', user.uid), {
-                email: user.email,
-                role: 'user'
-            });
-            console.log('User added to Firestore with role: user');
-        } catch (error) {
-            console.error('Error adding user to Firestore:', error);
-        }
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-            console.log('User registered:', user);
 
-            await addUserToFirestore(user);
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            console.log('User logged in:', userCredential.user);
 
-            navigate('/explore');
+            navigate('/');
         } catch (error) {
-            console.error('Error registering:', error.message);
-            alert(error.message);
+            console.error('Error logging in:', error.message);
+            setError('Invalid email or password');
         }
     };
 
@@ -43,7 +29,9 @@ function SignUp() {
             <Container className="d-flex flex-column justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
                 <Row className="w-100">
                     <Col md={{ span: 6, offset: 3 }}>
-                        <h2 className="text-center mb-4">Sign Up</h2>
+                        <h2 className="text-center mb-4">Login</h2>
+
+                        {error && <p className="text-danger text-center">{error}</p>}
 
                         <Form onSubmit={handleSubmit}>
                             <Form.Group controlId="formEmail" className="mb-3">
@@ -52,7 +40,7 @@ function SignUp() {
                                     type="email"
                                     placeholder="Enter your email"
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={(e) => setEmail(e.target.value)} // Обновляем email при вводе
                                     required
                                 />
                             </Form.Group>
@@ -63,13 +51,13 @@ function SignUp() {
                                     type="password"
                                     placeholder="Enter your password"
                                     value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) => setPassword(e.target.value)} // Обновляем пароль при вводе
                                     required
                                 />
                             </Form.Group>
 
                             <Button variant="success" type="submit" className="w-100">
-                                Sign Up
+                                Login
                             </Button>
                         </Form>
                     </Col>
@@ -79,4 +67,4 @@ function SignUp() {
     );
 }
 
-export default SignUp;
+export default Login;

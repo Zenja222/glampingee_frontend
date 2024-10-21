@@ -7,9 +7,7 @@ import './../Styles/menu.css';
 
 function Menu() {
     const [glampings, setGlampings] = useState([]);
-
     const navigate = useNavigate();
-
     const loadGlampings = async () => {
         try {
             const data = await getAll();
