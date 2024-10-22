@@ -1,29 +1,32 @@
-/* explore.css */
+.explore-card {
+    height: 100%; /* Full height of the container */
+    display: flex;
+    flex-direction: column; /* Stack the image and body vertically */
+    justify-content: space-between;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 
-.custom-card {
-    /* Customize card height, shadows, etc. */
-    min-height: 300px;
-    max-height: 400px;
 }
 
-.custom-card-body {
-    /* Adjust padding inside the card */
-    padding: 20px;
+.explore-card .card-img-top {
+    height: 500px;
+    object-fit: cover;
+}
+
+.explore-card .card-body {
+    flex-grow: 0;
+    padding: 10px;
     text-align: center;
 }
-
-h1 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    color: #2c3e50;
+body {
+    background-color:  #fdfefe ;
+    margin: 0;
+    padding: 0;
 }
 
-p {
-    font-size: 18px;
-    color: #7f8c8d;
-}
-.main-content{
-    margin-top: 100px;
-    margin-bottom: 50px;
-
+.main-content {
+    min-height: 100vh;
+    background-color:  #fdfefe ;
 }

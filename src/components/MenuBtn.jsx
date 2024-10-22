@@ -1,11 +1,13 @@
 import React from 'react'
 import {Link} from "react-router-dom";
+import {Button} from "react-bootstrap";
 
 function MenuBtn() {
     return (
         <div>
             <Link to='/explore'>
-                <button type='button' className='btn btn-success btn-lg'> Explore </button>
+                <Button href='/register' className='btn btn-warning text-uppercase fw-semibold ms-2'
+                        style={{ backgroundColor: '#ff9f00', border: 'none' }}>Explore</Button>
             </Link>
         </div>
     )

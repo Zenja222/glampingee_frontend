@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getGlampingById } from '../client/BookingManagement';
-import {Card, Spinner} from 'react-bootstrap';
-import '../Styles/glampingDetail.css';
+import { Card, CardBody, Col, Container, Row, Spinner } from 'react-bootstrap';
+import './../Styles/glampingDetail.css';
 
 function GlampingDetail() {
     const { id } = useParams();
@@ -17,6 +17,7 @@ function GlampingDetail() {
                 setGlamping(data);
             } catch (error) {
                 console.error("Failed to load glamping details", error);
+                setError("Failed to load glamping details");
             } finally {
                 setLoading(false);
             }
@@ -36,31 +37,45 @@ function GlampingDetail() {
     }
 
     if (error) {
-        return <div> {error}</div>;
+        return <div>{error}</div>;
     }
+
     if (!glamping) {
-        return <div>Glamping details not found</div>;  // Handle case when glamping is null or undefined
+        return <div>Glamping details not found</div>;
     }
 
     return (
+        <div className='over-card-bg' style={{ marginTop: '50px' }}>
+            <Container>
+                <Row className='g-5 justify-content-evenly'>
+                    <Col className='lg-6'>
+                        <Card className='custom-card'>
+                            <Row className='g-0'>
+                                <div className='col-6 col-md-5'>
+                                    <Card.Img
+                                        src={glamping.picture[0]}
+                                        className='card-image img-fluid rounded-start'
+                                        alt='glamping-picture'
+                                    />
+                                </div>
+                                <div className='col-6 col-md-7'>
+                                    <CardBody className='another-class-body'>
+                                        <Card.Title>{glamping.name}</Card.Title>
+                                        <Card.Subtitle className='mb-2 '>{glamping.county}</Card.Subtitle>
+                                        <Card.Text>{glamping.description || "No description available."}</Card.Text>
+                                        <Card.Text className='fw-bold'>{glamping.price ? `$${glamping.price}` : "Price not available."}</Card.Text>
+                                    </CardBody>
 
-        <Card>
-            <Card.Img variant="top" src={glamping.picture || "/path/to/default-image.jpg"} style={{ height: '400px', objectFit: 'cover' }} />
-            <Card.Body>
-                <Card.Title>{glamping.name}</Card.Title>
-                <Card.Text>{glamping.description || "No description available."}</Card.Text>
-                <Card.Text>
-                    <strong>Location:</strong> {glamping.location}
-                </Card.Text>
-                <Card.Text>
-                    <strong>Price:</strong> {glamping.price} EUR per night
-                </Card.Text>
-                <Card.Text>
-                    <strong>Amenities:</strong> {glamping.amenities ? glamping.amenities.join(', ') : "Not specified"}
-                </Card.Text>
-            </Card.Body>
-        </Card>
+
+                                </div>
+                            </Row>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
     );
 }
 
 export default GlampingDetail;
+

@@ -30,7 +30,6 @@ function Login() {
                 <Row className="w-100">
                     <Col md={{ span: 6, offset: 3 }}>
                         <h2 className="text-center mb-4">Login</h2>
-
                         {error && <p className="text-danger text-center">{error}</p>}
 
                         <Form onSubmit={handleSubmit}>
