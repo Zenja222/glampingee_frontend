@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import { getAll } from "../client/BookingManagement";
+import {useNavigate, useParams} from 'react-router-dom';
+import {getAll, getAverageRating} from "../client/BookingManagement";
 import './../Styles/explore.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
@@ -10,10 +10,16 @@ function Explore() {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
+
     const loadGlampings = async () => {
         try {
             const data = await getAll();
             setGlampings(data);
+            const updatedGlampings = await Promise.all(data.map(async (glamping) => {
+                const review = await getAverageRating(glamping.id);
+                return { ...glamping, review }; // Добавляем рейтинг в объект глэмпинга
+            }));
+            setGlampings(updatedGlampings);
         } catch (error) {
             console.error("Failed to load glampings", error);
         } finally {
@@ -44,7 +50,8 @@ function Explore() {
                                 <Card.Body>
                                     <Card.Title>{glamping.name}</Card.Title>
                                     <Card.Text>
-                                        {glamping.county || "No description available."}
+                                        {glamping.county || "No description available."} <br/>
+                                        Rating: {glamping.review ? glamping.review.toFixed(1) : "No reviews yet"}
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
