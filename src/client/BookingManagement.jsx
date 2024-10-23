@@ -99,3 +99,15 @@ export const addRating = async (id, rating) => {
             throw error;
         }
 };
+
+export const filterByField = async (sortField, sortDirection) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/glamping/filter`, {
+            params: { sortField, sortDirection }
+        });
+        return response.data; // This will return the filtered glamping data
+    } catch (error) {
+        console.error("Error fetching filtered glampings:", error);
+        throw error; // Re-throw the error for handling in the calling function
+    }
+};

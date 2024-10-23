@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Button, Nav, Navbar } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom';
@@ -18,7 +18,7 @@ function Header() {
     // Determine the navbar background class based on the current path
     const isHomePage = location.pathname === '/';
     const navbarClass = isHomePage ? 'fixed-top bg-transparent' : 'fixed-top bg-light-orange navbar-margin';
-    const { role, currentUser } = useAuth();  // Fetch role and currentUser from context
+    const {currentUser } = useAuth();
 
     // Log out function
     const logOut = async () => {
@@ -30,7 +30,7 @@ function Header() {
             <Navbar expand='lg' className={navbarClass}>
                 <Container>
                     <div className='d-flex justify-content-between w-100 align-items-center'>
-                        {/* Left Side: Glamping.ee */}
+
                         <Navbar.Brand>
                             <Link to='/' className='navbar-brand fw-semibold text-white'>
                                 Glamping.ee
@@ -40,7 +40,7 @@ function Header() {
                         <Navbar.Toggle aria-controls='basic-navbar-nav' />
                         <Navbar.Collapse id='basic-navbar-nav'>
                             <div className='d-flex justify-content-between w-100 align-items-center'>
-                                {/* Middle Section: Home and Explore */}
+
                                 <Nav className='mx-auto d-flex justify-content-center me-5'>
                                     <NavLink to='/' className='nav-link active text-uppercase fw-semibold text-white'>
                                         Home
@@ -50,7 +50,7 @@ function Header() {
                                     </NavLink>
                                 </Nav>
 
-                                {/* Right Section: Login/Logout/Register */}
+
                                 {currentUser ? (
                                     <>
                                         <Nav className='ms-auto d-flex align-items-center'>
