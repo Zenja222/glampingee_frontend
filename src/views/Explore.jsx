@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import {Container, Row, Col, Card, Button} from 'react-bootstrap';
 import {useNavigate, useParams} from 'react-router-dom';
-import {getAll, getAverageRating} from "../client/BookingManagement";
+import {deleteGlamping, getAll, getAverageRating} from "../client/BookingManagement";
 import './../Styles/explore.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import {FaTrash} from "react-icons/fa";
+import {useAuth} from "../routes/AuthProvider";
 
 function Explore() {
     const [glampings, setGlampings] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const {role} = useAuth();
+    const {id} = useParams();
 
 
     const loadGlampings = async () => {
         try {
+            setLoading(true);
             const data = await getAll();
             setGlampings(data);
             const updatedGlampings = await Promise.all(data.map(async (glamping) => {
@@ -27,9 +32,24 @@ function Explore() {
         }
     };
 
+    const deleteGlampingById = async (id) => {
+        try {
+            await deleteGlamping(id); // Удаляем глэмпинг по ID
+            // После успешного удаления обновляем список глэмпингов
+            setGlampings((prevGlampings) => prevGlampings.filter(glamping => glamping.id !== id));
+        } catch (error) {
+            console.error("Failed to delete glamping", error);
+        }
+    };
+
     useEffect(() => {
         loadGlampings();
     }, []);
+
+    const handleDeleteClick = (id, e) => {
+        e.stopPropagation(); // Предотвратить всплытие события
+        deleteGlampingById(id); // Вызов функции удаления
+    };
 
     const handleCardClick = (id) => {
         navigate(`/glamping/${id}`);
@@ -46,6 +66,15 @@ function Explore() {
                                 onClick={() => handleCardClick(glamping.id)}
                                 style={{ cursor: 'pointer' }}
                             >
+                                {role === 'admin' && (
+                                    <FaTrash
+                                        className='trash'
+                                        onClick={(e) => {
+                                            handleDeleteClick(glamping.id,e);
+                                        }}
+                                    />
+                                )}
+
                                 <Card.Img variant="top" src={glamping.picture[0] || "https://via.placeholder.com/150"} alt="Card image" />
                                 <Card.Body>
                                     <Card.Title>{glamping.name}</Card.Title>

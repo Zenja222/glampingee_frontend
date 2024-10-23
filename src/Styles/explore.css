@@ -30,3 +30,17 @@ body {
     min-height: 100vh;
     background-color:  #fdfefe ;
 }
+
+.trash {
+    position: absolute;   /* Positioning the icon absolutely */
+    top: 10px;           /* Adjusting from the top */
+    right: 10px;         /* Adjusting from the right */
+    color: red;          /* Red color for visibility */
+    cursor: pointer;     /* Change cursor to pointer on hover */
+    font-size: 20px;
+    z-index: 10;
+}
+
+.trash:hover {
+    color: darkred;      /* Darker red on hover for feedback */
+}

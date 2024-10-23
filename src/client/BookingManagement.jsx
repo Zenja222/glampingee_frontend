@@ -1,4 +1,5 @@
 import axios from "axios";
+
 export const getAll = async () => {
     try {
         const response =
@@ -59,7 +60,7 @@ export const filterGlamping = async () => {
 export const addRating = async (id, rating) => {
     try {
         const response =
-            await axios.post(`http://localhost:8080/reviews/${id}`, null,{
+            await axios.post(`http://localhost:8080/reviews/${id}`, null, {
                 params: {
                     rating: rating
                 }
@@ -80,22 +81,42 @@ export const addRating = async (id, rating) => {
     }
 }
 
-    export const getAverageRating = async (id) => {
-        try {
-            const response =
-                await axios.get(`http://localhost:8080/reviews/average/${id}`);
-            return response.data;
-        } catch (error) {
-            if (error.response) {
-                // Server responded with a status other than 200 range
-                console.error('Server Error:', error.response.data);
-            } else if (error.request) {
-                // Request was made but no response received
-                console.error('Super Network Error:', error.request);
-            } else {
-                // Something else happened
-                console.error('Error:', error.message);
-            }
-            throw error;
+export const getAverageRating = async (id) => {
+    try {
+        const response =
+            await axios.get(`http://localhost:8080/reviews/average/${id}`);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            // Server responded with a status other than 200 range
+            console.error('Server Error:', error.response.data);
+        } else if (error.request) {
+            // Request was made but no response received
+            console.error('Super Network Error:', error.request);
+        } else {
+            // Something else happened
+            console.error('Error:', error.message);
         }
+        throw error;
+    }
+}
+export const deleteGlamping = async (id) => {
+    try {
+        const response =
+            await axios.delete(`http://localhost:8080/glamping/${id}`);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            // Server responded with a status other than 200 range
+            console.error('Server Error:', error.response.data);
+        } else if (error.request) {
+            // Request was made but no response received
+            console.error('Super Network Error:', error.request);
+        } else {
+            // Something else happened
+            console.error('Error:', error.message);
+        }
+        throw error;
+    }
+
 };
