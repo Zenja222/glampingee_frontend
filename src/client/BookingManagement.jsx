@@ -87,21 +87,15 @@ export const addRating = async (id, rating) => {
             return response.data;
         } catch (error) {
             if (error.response) {
-
+                // Server responded with a status other than 200 range
                 console.error('Server Error:', error.response.data);
             } else if (error.request) {
-
+                // Request was made but no response received
                 console.error('Super Network Error:', error.request);
             } else {
-
+                // Something else happened
                 console.error('Error:', error.message);
             }
             throw error;
         }
-};
-export const filterByField = async (sortField, sortDirection) => {
-    const response = await axios.get(`http://localhost:8080/glamping/filter`, {
-        params: { sortField, sortDirection }
-    });
-    return response.data;
 };
