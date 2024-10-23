@@ -31,7 +31,7 @@ function SignUp() {
 
             await addUserToFirestore(user);
 
-            navigate('/explore');
+            navigate('/');
         } catch (error) {
             console.error('Error registering:', error.message);
             alert(error.message);

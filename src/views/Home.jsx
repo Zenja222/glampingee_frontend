@@ -3,10 +3,7 @@ import MenuBtn from "../components/MenuBtn";
 
 function Home(){
 
-    // const [isSignUpActive, setIsSignUpActive] = useState(false);
-    // // const handleMethodChange = () => {
-    // //     setIsSignUpActive(!isSignUpActive)
-    // // }
+
 
     return (
         <div className='home-page'>

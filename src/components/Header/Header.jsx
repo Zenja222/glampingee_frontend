@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Nav, Navbar } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom';
@@ -7,7 +7,10 @@ import Explore from '../../views/Explore';
 import GlampingDetail from '../../views/GlampingDetail';
 import Register from '../../views/Register';
 import Login from '../../views/Login';
-import './header.css'; // Ensure this path is correct
+import './header.css';
+import { useAuth } from "../../routes/AuthProvider";
+import { auth } from "../../firebase";
+import { signOut } from "@firebase/auth";
 
 function Header() {
     const location = useLocation();
@@ -15,6 +18,12 @@ function Header() {
     // Determine the navbar background class based on the current path
     const isHomePage = location.pathname === '/';
     const navbarClass = isHomePage ? 'fixed-top bg-transparent' : 'fixed-top bg-light-orange navbar-margin';
+    const { role, currentUser } = useAuth();  // Fetch role and currentUser from context
+
+    // Log out function
+    const logOut = async () => {
+        await signOut(auth);
+    };
 
     return (
         <div>
@@ -41,20 +50,37 @@ function Header() {
                                     </NavLink>
                                 </Nav>
 
-                                {/* Right Section: Login and Register Button */}
-                                {!location.pathname.includes('/login') && !location.pathname.includes('/register') && (
-                                    <Nav className='ms-auto d-flex align-items-center'>
-                                        <NavLink to='/login' className='nav-link active text-uppercase text-white'>
-                                            Log In
-                                        </NavLink>
-                                        <Button
-                                            as={Link}
-                                            to='/register'
-                                            className='btn text-uppercase fw-semibold ms-2'
-                                            style={{ backgroundColor: '#ff9f00', border: 'none' }}>
-                                            Register
-                                        </Button>
-                                    </Nav>
+                                {/* Right Section: Login/Logout/Register */}
+                                {currentUser ? (
+                                    <>
+                                        <Nav className='ms-auto d-flex align-items-center'>
+                                            <p className="text-white">
+                                                Welcome, {currentUser.email}
+                                            </p>
+                                            <Button onClick={logOut}
+                                                    as={Link}
+                                                    to='/'
+                                                    className='btn text-uppercase fw-semibold ms-2'
+                                                    style={{ backgroundColor: '#ff9f00', border: 'none' }}>
+                                                Log Out
+                                            </Button>
+                                        </Nav>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Nav className='ms-auto d-flex align-items-center'>
+                                            <NavLink to='/login' className='nav-link active text-uppercase text-white'>
+                                                Log In
+                                            </NavLink>
+                                            <Button
+                                                as={Link}
+                                                to='/register'
+                                                className='btn text-uppercase fw-semibold ms-2'
+                                                style={{ backgroundColor: '#ff9f00', border: 'none' }}>
+                                                Register
+                                            </Button>
+                                        </Nav>
+                                    </>
                                 )}
                             </div>
                         </Navbar.Collapse>

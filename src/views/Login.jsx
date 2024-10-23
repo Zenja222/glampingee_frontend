@@ -9,6 +9,7 @@ function Login() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const [isSignInActive, setIsSignInActive] = useState(true);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -33,6 +34,7 @@ function Login() {
                         {error && <p className="text-danger text-center">{error}</p>}
 
                         <Form onSubmit={handleSubmit}>
+
                             <Form.Group controlId="formEmail" className="mb-3">
                                 <Form.Label>Email address</Form.Label>
                                 <Form.Control
