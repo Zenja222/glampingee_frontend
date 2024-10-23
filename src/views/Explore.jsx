@@ -44,12 +44,17 @@ function Explore() {
                             <Card
                                 className="text-center explore-card"
                                 onClick={() => handleCardClick(glamping.id)}
-                                style={{ cursor: 'pointer' }}
+                                style={{ cursor: 'pointer',height:'620px' }}
                             >
                                 <Card.Img variant="top" src={glamping.picture[0] || "https://via.placeholder.com/150"} alt="Card image" />
                                 <Card.Body>
                                     <Card.Title>{glamping.name}</Card.Title>
-                                    <Card.Text>
+                                    <Card.Text style={{
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        display: '-webkit-box',
+                                        WebkitLineClamp: 3, // Adjust the number of visible lines
+                                        WebkitBoxOrient: 'vertical' }}>
                                         {glamping.county || "No description available."} <br/>
                                         Rating: {glamping.review ? glamping.review.toFixed(1) : "No reviews yet"}
                                     </Card.Text>
