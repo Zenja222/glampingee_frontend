@@ -43,7 +43,6 @@ function GlampingDetail() {
         fetchReviewData();
     }, [id]);
 
-
     const handleRatingChange = (newRating) => {
         setUserRating(newRating);
         console.log("Selected Rating: ", newRating);
@@ -78,23 +77,23 @@ function GlampingDetail() {
     }
 
     return (
-        <div className='over-card-bg' style={{marginTop: '50px'}}>
-            <Container>
+        <div className='over-card-bg'>
+            <Container className='card-container'>
                 <Row className='g-5 justify-content-evenly'>
                     <Col className='lg-6'>
                         <Card className='custom-card'>
                             <Row className='g-0'>
-                                <div className='col-6 col-md-5'>
+                                <div className='col-6 col-md-5' > {/* Fixed height for the card */}
                                     <Card.Img
                                         src={glamping.picture[0]}
-                                        className='card-image img-fluid rounded-start'
+                                        className='card-image '
                                         alt='glamping-picture'
                                     />
                                 </div>
                                 <div className='col-6 col-md-7'>
                                     <CardBody className='another-class-body'>
                                         <Card.Title>{glamping.name}</Card.Title>
-                                        <Card.Subtitle className='mb-2 '>{glamping.county}</Card.Subtitle>
+                                        <Card.Subtitle className='mb-2'>{glamping.county}</Card.Subtitle>
                                         <Card.Text>{glamping.description || "No description available."}</Card.Text>
                                         <Card.Text className='fw-bold'>
                                             {glamping.price ? `$${glamping.price}` : "Price not available."}
@@ -128,6 +127,7 @@ function GlampingDetail() {
                                 </div>
                             </Row>
                         </Card>
+
                     </Col>
                 </Row>
             </Container>
@@ -136,5 +136,6 @@ function GlampingDetail() {
 }
 
 export default GlampingDetail;
+
 
 

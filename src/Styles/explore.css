@@ -8,6 +8,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 
+
 }
 
 .explore-card .card-img-top {
@@ -20,7 +21,7 @@
     padding: 10px;
     text-align: center;
 }
-body {
+.body {
     background-color:  #fdfefe ;
     margin: 0;
     padding: 0;
