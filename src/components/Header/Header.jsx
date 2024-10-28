@@ -14,8 +14,6 @@ import { signOut } from "@firebase/auth";
 
 function Header() {
     const location = useLocation();
-
-    // Determine the navbar background class based on the current path
     const isHomePage = location.pathname === '/';
     const navbarClass = isHomePage ? 'fixed-top bg-transparent' : 'fixed-top bg-light-orange navbar-margin';
     const {currentUser } = useAuth();
@@ -54,7 +52,7 @@ function Header() {
                                 {currentUser ? (
                                     <>
                                         <Nav className='ms-auto d-flex align-items-center'>
-                                            <p className="text-white">
+                                            <p className="text-white mb-0">
                                                 Welcome, {currentUser.email}
                                             </p>
                                             <Button onClick={logOut}
