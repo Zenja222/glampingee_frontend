@@ -49,8 +49,7 @@ function Explore() {
     };
     const deleteGlampingById = async (id) => {
         try {
-            await deleteGlamping(id); // Удаляем глэмпинг по ID
-            // После успешного удаления обновляем список глэмпингов
+            await deleteGlamping(id);
             setGlampings((prevGlampings) => prevGlampings.filter(glamping => glamping.id !== id));
         } catch (error) {
             console.error("Failed to delete glamping", error);
@@ -67,8 +66,8 @@ function Explore() {
     };
 
     const handleDeleteClick = (id, e) => {
-        e.stopPropagation(); // Предотвратить всплытие события
-        deleteGlampingById(id); // Вызов функции удаления
+        e.stopPropagation();
+        deleteGlampingById(id);
     };
 
     return (
@@ -103,7 +102,7 @@ function Explore() {
                     <Button
                         variant="success"
                         onClick={() => loadFilteredGlampings(sortField, sortDirection)}
-                        disabled={!sortField} // Disable if no sort field is selected
+                        disabled={!sortField}
                     >
                         Filter
                     </Button>

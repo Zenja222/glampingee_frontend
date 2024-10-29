@@ -11,6 +11,8 @@ import './header.css';
 import { useAuth } from "../../routes/AuthProvider";
 import { auth } from "../../firebase";
 import { signOut } from "@firebase/auth";
+import GlampingEditView from "../../views/GlampingEditView";
+import PrivateRoute from "../../routes/PrivateRoutes";
 
 function Header() {
     const location = useLocation();
@@ -95,7 +97,12 @@ function Header() {
                 <Route path='/register' element={<Register />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/glamping/:id' element={<GlampingDetail />} />
-                {/*<Route path="/update/:id" element={<GlampingEditView />} />*/}
+                <Route path="/update/:id" element={
+                        <PrivateRoute requiredRole="admin">
+                            <GlampingEditView />
+                        </PrivateRoute>
+                    }
+                />
             </Routes>
         </div>
     );
