@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Dropdown } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import { getAll, filterByField } from "../client/BookingManagement";
+import {deleteGlamping, getAverageRating} from "../client/BookingManagement";
 import './../Styles/explore.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import {FaTrash, FaPaintBrush} from "react-icons/fa";
+import {useAuth} from "../routes/AuthProvider";
 
 function Explore() {
     const [glampings, setGlampings] = useState([]);
@@ -11,6 +14,8 @@ function Explore() {
     const [sortField, setSortField] = useState('');
     const [sortDirection, setSortDirection] = useState('asc');
     const navigate = useNavigate();
+    const {role} = useAuth();
+    const {id} = useParams();
 
 
     useEffect(() => {
@@ -42,10 +47,28 @@ function Explore() {
             setLoading(false);
         }
     };
+    const deleteGlampingById = async (id) => {
+        try {
+            await deleteGlamping(id); // Удаляем глэмпинг по ID
+            // После успешного удаления обновляем список глэмпингов
+            setGlampings((prevGlampings) => prevGlampings.filter(glamping => glamping.id !== id));
+        } catch (error) {
+            console.error("Failed to delete glamping", error);
+        }
+    };
 
+    const handleEditClick = (id, e) => {
+        e.stopPropagation(); // Prevent event bubbling
+        navigate(`/update/${id}`); // Change to your edit view path
+    };
 
     const handleCardClick = (id) => {
         navigate(`/glamping/${id}`);
+    };
+
+    const handleDeleteClick = (id, e) => {
+        e.stopPropagation(); // Предотвратить всплытие события
+        deleteGlampingById(id); // Вызов функции удаления
     };
 
     return (
@@ -98,6 +121,19 @@ function Explore() {
                                     onClick={() => handleCardClick(glamping.id)}
                                     style={{ cursor: 'pointer', height: '620px' }}
                                 >
+                                    {role === 'admin' && (
+                                        <>
+                                        <FaTrash
+                                            className='trash'
+                                            onClick={(e) => {
+                                                handleDeleteClick(glamping.id,e);
+                                            }}
+                                        />
+                                            <FaPaintBrush className='brush'
+                                                          onClick={(e) => handleEditClick(glamping.id, e)}
+                                            />
+                                        </>
+                                    )}
                                     <Card.Img
                                         variant="top"
                                         src={glamping.picture[0] || "https://via.placeholder.com/150"}
@@ -124,5 +160,4 @@ function Explore() {
         </div>
     );
 }
-
 export default Explore;

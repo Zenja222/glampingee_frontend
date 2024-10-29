@@ -37,7 +37,7 @@ function Header() {
                             </Link>
                         </Navbar.Brand>
 
-                        <Navbar.Toggle aria-controls='basic-navbar-nav' />
+                        <Navbar.Toggle aria-controls='basic-navbar-nav'/>
                         <Navbar.Collapse id='basic-navbar-nav'>
                             <div className='d-flex justify-content-between w-100 align-items-center'>
 
@@ -45,7 +45,8 @@ function Header() {
                                     <NavLink to='/' className='nav-link active text-uppercase fw-semibold text-white'>
                                         Home
                                     </NavLink>
-                                    <NavLink to='/explore' className='nav-link active text-uppercase fw-semibold text-white'>
+                                    <NavLink to='/explore'
+                                             className='nav-link active text-uppercase fw-semibold text-white'>
                                         Explore
                                     </NavLink>
                                 </Nav>
@@ -54,14 +55,14 @@ function Header() {
                                 {currentUser ? (
                                     <>
                                         <Nav className='ms-auto d-flex align-items-center'>
-                                            <p className="text-white">
+                                            <p className="text-white mb-0" >
                                                 Welcome, {currentUser.email}
                                             </p>
                                             <Button onClick={logOut}
                                                     as={Link}
                                                     to='/'
                                                     className='btn text-uppercase fw-semibold ms-2'
-                                                    style={{ backgroundColor: '#ff9f00', border: 'none' }}>
+                                                    style={{backgroundColor: '#ff9f00', border: 'none'}}>
                                                 Log Out
                                             </Button>
                                         </Nav>
@@ -76,7 +77,7 @@ function Header() {
                                                 as={Link}
                                                 to='/register'
                                                 className='btn text-uppercase fw-semibold ms-2'
-                                                style={{ backgroundColor: '#ff9f00', border: 'none' }}>
+                                                style={{backgroundColor: '#ff9f00', border: 'none'}}>
                                                 Register
                                             </Button>
                                         </Nav>
@@ -89,11 +90,12 @@ function Header() {
             </Navbar>
 
             <Routes>
-                <Route path='/' element={<Home />} />
+            <Route path='/' element={<Home />} />
                 <Route path='/explore' element={<Explore />} />
                 <Route path='/register' element={<Register />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/glamping/:id' element={<GlampingDetail />} />
+                {/*<Route path="/update/:id" element={<GlampingEditView />} />*/}
             </Routes>
         </div>
     );

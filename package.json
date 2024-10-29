@@ -12,6 +12,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "firebase": "^10.14.1",
+    "formik": "^2.4.6",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.5",
     "react-bootstrap-star-rating": "^3.5.5-alpha.0.3",
@@ -21,7 +22,8 @@
     "react-rating-stars-component": "^2.2.0",
     "react-router-dom": "^6.27.0",
     "react-scripts": "^5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^1.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
