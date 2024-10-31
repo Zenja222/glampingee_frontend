@@ -1,6 +1,9 @@
-import { Field, Form, Formik } from "formik";
+import {Field, FieldArray, Form, Formik} from "formik";
 import { Button } from "react-bootstrap";
 import * as Yup from 'yup';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faAdd, faTrash} from "@fortawesome/free-solid-svg-icons";
+import React from "react";
 
 function GlampingEditForm({ handleGlampingUpdate, glamping }) {
 
@@ -83,42 +86,43 @@ function GlampingEditForm({ handleGlampingUpdate, glamping }) {
                             {errors.price && touched.price ? <div>{errors.price}</div> : null}
                         </div>
 
-                        <div className="input-wrapper mb-3">
-                            <label>Pictures</label>
-                            {values.picture.map((pic, index) => (
-                                <div key={index} className="d-flex align-items-center mb-2">
-                                    <Field
-                                        className="form-control"
-                                        placeholder={`Picture URL ${index + 1}`}
-                                        name={`picture[${index}]`}
-                                        type="text"
-                                    />
-                                    {errors.picture && touched.picture && errors.picture[index] && touched.picture[index] ? (
-                                        <div>{errors.picture[index]}</div>
-                                    ) : null}
+                        <FieldArray name="picture">
+                            {({ remove, push }) => (
+                                <div className="input-wrapper mb-3">
+                                    {values.picture.map((_, picIndex) => (
+                                        <div key={picIndex} className="mb-2 d-flex align-items-center">
+                                            <Field
+                                                className="form-control flex-grow-1"
+                                                placeholder={`Picture URL ${picIndex + 1}`}
+                                                name={`picture[${picIndex}]`}
+                                                type="text"
+                                            />
+                                            <Button
+                                                variant="danger"
+                                                type="button"
+                                                onClick={() => remove(picIndex)}
+                                                className="ml-2 m-button"
+                                            >
+                                                <FontAwesomeIcon icon={faTrash} />
+                                            </Button>
+                                            <Button
+                                                type="button"
+                                                onClick={() => push("")}
+                                                className="ml-2 m-button"
+                                            >
+                                                <FontAwesomeIcon icon={faAdd} />
+                                            </Button>
+                                            {errors.picture && touched.picture && errors.picture[picIndex] && touched.picture[picIndex] ? (
+                                                <div className="error">{errors.picture[picIndex]}</div>
+                                            ) : null}
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
+                            )}
+                        </FieldArray>
 
-                            <Button
-                                type="button"
-                                onClick={() => {
-                                    setFieldValue('picture', [...values.picture, '']);
-                                }}
-                            >
-                                Add Picture
-                            </Button>
-                            <Button
-                                onClick={() => {
-                                    if (values.picture.length > 1) {
-                                        setFieldValue('picture', values.picture.slice(0, -1));
-                                    }
-                                }}
-                            >
-                                Delete Picture
-                            </Button>
-                        </div>
-
-                        <Button type="submit">Submit</Button>
+                        <Button variant="warning"
+                                type="submit">Submit</Button>
                     </Form>
                 )}
             </Formik>
