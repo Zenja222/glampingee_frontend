@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Dropdown } from 'react-bootstrap';
 import {useNavigate, useParams} from 'react-router-dom';
 import { getAll, filterByField } from "../client/BookingManagement";
-import {deleteGlamping, getAverageRating} from "../client/BookingManagement";
+import {deleteGlamping} from "../client/BookingManagement";
 import './../Styles/explore.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import {FaTrash, FaPaintBrush} from "react-icons/fa";
@@ -65,6 +65,10 @@ function Explore() {
         navigate(`/glamping/${id}`);
     };
 
+    const handleAddClick = () => {
+        navigate(`/add`);
+    };
+
     const handleDeleteClick = (id, e) => {
         e.stopPropagation();
         deleteGlampingById(id);
@@ -74,7 +78,7 @@ function Explore() {
         <div className='main-content' style={{ marginTop: '90px' }}>
             <Container className="my-5">
 
-                <div className="d-flex justify-content-between mb-3">
+                <div className="d-flex mb-3">
 
                     <Dropdown className="me-2">
                         <Dropdown.Toggle variant="primary" id="sort-field-dropdown">
@@ -106,6 +110,16 @@ function Explore() {
                     >
                         Filter
                     </Button>
+                    {role === 'admin' && (
+                    <div className="ms-auto">
+                        <Button
+                            variant="success"
+                            onClick={() => handleAddClick()}
+                        >
+                            Add new glamping
+                        </Button>
+                    </div>
+                        )}
                 </div>
 
 

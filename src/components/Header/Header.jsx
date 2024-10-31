@@ -13,6 +13,7 @@ import { auth } from "../../firebase";
 import { signOut } from "@firebase/auth";
 import GlampingEditView from "../../views/GlampingEditView";
 import PrivateRoute from "../../routes/PrivateRoutes";
+import GlampingAddView from "../../views/GlampingAddView";
 
 function Header() {
     const location = useLocation();
@@ -102,6 +103,12 @@ function Header() {
                             <GlampingEditView />
                         </PrivateRoute>
                     }
+                />
+                <Route path="/add" element={
+                    <PrivateRoute requiredRole="admin">
+                        <GlampingAddView />
+                    </PrivateRoute>
+                }
                 />
             </Routes>
         </div>
