@@ -5,9 +5,11 @@ import { Button, Card, CardBody, Col, Container, Row, Spinner } from 'react-boot
 import './../Styles/glampingDetail.css';
 import { useAuth } from "../routes/AuthProvider";
 import Rating from 'react-rating-stars-component';
+import { useTranslation } from 'react-i18next';
 
 function GlampingDetail() {
     const { id } = useParams();
+    const { t } = useTranslation(); // Initialize translation
     const [glamping, setGlamping] = useState(null);
     const [userRating, setUserRating] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -22,14 +24,14 @@ function GlampingDetail() {
                 setGlamping(data);
             } catch (error) {
                 console.error("Failed to load glamping details", error);
-                setError("Failed to load glamping details");
+                setError(t("failed_to_load")); // Use translation for error message
             } finally {
                 setLoading(false);
             }
         };
 
         fetchGlamping();
-    }, [id]);
+    }, [id, t]);
 
     const handleRatingChange = (newRating) => {
         setUserRating(newRating);
@@ -39,10 +41,10 @@ function GlampingDetail() {
     const submitReview = async () => {
         try {
             await addRating(id, userRating);
-            alert('Review submitted successfully!');
+            alert(t('review_submitted')); // Use translation for success message
         } catch (error) {
             console.error("Failed to submit review", error);
-            alert('Failed to submit review');
+            alert(t('review_failed')); // Use translation for failure message
         }
     };
 
@@ -62,7 +64,7 @@ function GlampingDetail() {
         return (
             <div className="text-center w-100">
                 <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
+                    <span className="visually-hidden">{t('loading')}</span> {/* Use translation */}
                 </Spinner>
             </div>
         );
@@ -73,7 +75,7 @@ function GlampingDetail() {
     }
 
     if (!glamping) {
-        return <div>Glamping details not found</div>;
+        return <div>{t('glamping_not_found')}</div>; // Use translation for not found message
     }
 
     return (
@@ -97,14 +99,14 @@ function GlampingDetail() {
                                                 disabled={currentImageIndex === 0}
                                                 className="me-2"
                                             >
-                                                Previous
+                                                {t('previous')} {/* Use translation */}
                                             </Button>
                                             <Button
                                                 variant="secondary"
                                                 onClick={handleNextImage}
                                                 disabled={currentImageIndex === glamping.picture.length - 1}
                                             >
-                                                Next
+                                                {t('next')} {/* Use translation */}
                                             </Button>
                                         </div>
                                     )}
@@ -113,16 +115,16 @@ function GlampingDetail() {
                                     <CardBody className='another-class-body'>
                                         <Card.Title>{glamping.name}</Card.Title>
                                         <Card.Subtitle className='mb-2'>{glamping.county}</Card.Subtitle>
-                                        <Card.Text>{glamping.description || "No description available."}</Card.Text>
+                                        <Card.Text>{glamping.description || t('no_description')}</Card.Text> {/* Use translation */}
                                         <Card.Text className='fw-bold'>
-                                            {glamping.price ? `$${glamping.price}` : "Price not available."}
+                                            {glamping.price ? `$${glamping.price}` : t('price_not_available')} {/* Use translation */}
                                         </Card.Text>
                                         <Card.Text className='fw-bold'>
-                                            Rating: {glamping.review ? glamping.review.toFixed(1) : "No reviews yet."}
+                                            {t('rating')}: {glamping.review ? glamping.review.toFixed(1) : t('no_reviews')} {/* Use translation */}
                                         </Card.Text>
                                         {(role === 'user' || role === 'admin') ? (
                                             <>
-                                                <Card.Text>Leave your rating:</Card.Text>
+                                                <Card.Text>{t('leave_your_rating')}</Card.Text> {/* Use translation */}
                                                 <Rating
                                                     count={5}
                                                     value={userRating}
@@ -130,14 +132,14 @@ function GlampingDetail() {
                                                     activeColor="#ffd700"
                                                     onChange={handleRatingChange}
                                                 />
-                                                <Button onClick={submitReview} className="mt-2">Submit Review</Button>
+                                                <Button onClick={submitReview} className="mt-2">{t('submit_review')}</Button> {/* Use translation */}
                                             </>
                                         ) : (
                                             <Card.Text>
-                                                Want to leave a review? <br />
-                                                <a href="/login">Login</a>
-                                                <span> or </span>
-                                                <a href="/register"> Register</a>
+                                                {t('want_to_leave_review')} <br /> {/* Use translation */}
+                                                <a href="/login">{t('login')}</a>
+                                                <span> {t('or')} </span> {/* Use translation */}
+                                                <a href="/register">{t('register')}</a>
                                             </Card.Text>
                                         )}
                                     </CardBody>
@@ -147,13 +149,8 @@ function GlampingDetail() {
                     </Col>
                 </Row>
             </Container>
-
         </div>
     );
 }
 
 export default GlampingDetail;
-
-
-
-

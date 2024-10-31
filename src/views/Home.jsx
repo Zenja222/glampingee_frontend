@@ -1,8 +1,11 @@
 import React from 'react';
 import MenuBtn from "../components/MenuBtn";
 import backgroundImage from '../../src/assets/images/8410.jpg';
+import { useTranslation } from 'react-i18next';
 
 function Home() {
+    const { t } = useTranslation(); // Initialize translation hook
+
     return (
         <div className='home-page'>
             <header
@@ -16,9 +19,9 @@ function Home() {
                 <div className='container'>
                     <div className='row'>
                         <div className='col-sm-6 d-flex d-sm-block flex-column align-items-center'>
-                            <h2 className='mb-0 fw-bold'>Welcome To</h2>
+                            <h2 className='mb-0 fw-bold'>{t('welcome_to')}</h2>
                             <h1 className='mb-5 fw-bold text-sm-start'>
-                                Estonian Glampings
+                                {t('est_glampings')}
                             </h1>
                             <MenuBtn />
                         </div>

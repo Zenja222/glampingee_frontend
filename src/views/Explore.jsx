@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Dropdown } from 'react-bootstrap';
-import {useNavigate, useParams} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getAll, filterByField } from "../client/BookingManagement";
-import {deleteGlamping} from "../client/BookingManagement";
+import { deleteGlamping } from "../client/BookingManagement";
 import './../Styles/explore.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import {FaTrash, FaPaintBrush} from "react-icons/fa";
-import {useAuth} from "../routes/AuthProvider";
+import { FaTrash, FaPaintBrush } from "react-icons/fa";
+import { useAuth } from "../routes/AuthProvider";
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 function Explore() {
+    const { t } = useTranslation(); // Initialize translation hook
     const [glampings, setGlampings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [sortField, setSortField] = useState('');
     const [sortDirection, setSortDirection] = useState('asc');
     const navigate = useNavigate();
-    const {role} = useAuth();
-    const {id} = useParams();
-
+    const { role } = useAuth();
+    const { id } = useParams();
 
     useEffect(() => {
         loadGlampings();
@@ -35,7 +36,6 @@ function Explore() {
         }
     };
 
-
     const loadFilteredGlampings = async (field, direction) => {
         try {
             setLoading(true);
@@ -47,6 +47,7 @@ function Explore() {
             setLoading(false);
         }
     };
+
     const deleteGlampingById = async (id) => {
         try {
             await deleteGlamping(id);
@@ -77,54 +78,49 @@ function Explore() {
     return (
         <div className='main-content' style={{ marginTop: '90px' }}>
             <Container className="my-5">
-
                 <div className="d-flex mb-3">
-
                     <Dropdown className="me-2">
                         <Dropdown.Toggle variant="primary" id="sort-field-dropdown">
-                            {sortField || 'Select Sort Field'}
+                            {sortField || t('select_sort_field')}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => setSortField('name')}>Name</Dropdown.Item>
-                            <Dropdown.Item onClick={() => setSortField('price')}>Price</Dropdown.Item>
-                            <Dropdown.Item onClick={() => setSortField('county')}>County</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setSortField('name')}>{t('name')}</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setSortField('price')}>{t('price')}</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setSortField('county')}>{t('county')}</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-
 
                     <Dropdown className="me-2">
                         <Dropdown.Toggle variant="primary" id="sort-direction-dropdown">
-                            {sortDirection === 'asc' ? 'Ascending' : 'Descending'}
+                            {sortDirection === 'asc' ? t('ascending') : t('descending')}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => setSortDirection('asc')}>Ascending</Dropdown.Item>
-                            <Dropdown.Item onClick={() => setSortDirection('desc')}>Descending</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setSortDirection('asc')}>{t('ascending')}</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setSortDirection('desc')}>{t('descending')}</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-
 
                     <Button
                         variant="success"
                         onClick={() => loadFilteredGlampings(sortField, sortDirection)}
                         disabled={!sortField}
                     >
-                        Filter
+                        {t('filter')}
                     </Button>
                     {role === 'admin' && (
-                    <div className="ms-auto">
-                        <Button
-                            variant="success"
-                            onClick={() => handleAddClick()}
-                        >
-                            Add new glamping
-                        </Button>
-                    </div>
-                        )}
+                        <div className="ms-auto">
+                            <Button
+                                variant="success"
+                                onClick={() => handleAddClick()}
+                            >
+                                {t('add_new_glamping')}
+                            </Button>
+                        </div>
+                    )}
                 </div>
 
-
                 {loading ? (
-                    <p>Loading glampings...</p>
+                    <p>{t('loading_glampings')}</p>
                 ) : (
                     <Row>
                         {glampings.map((glamping, index) => (
@@ -136,12 +132,12 @@ function Explore() {
                                 >
                                     {role === 'admin' && (
                                         <>
-                                        <FaTrash
-                                            className='trash'
-                                            onClick={(e) => {
-                                                handleDeleteClick(glamping.id,e);
-                                            }}
-                                        />
+                                            <FaTrash
+                                                className='trash'
+                                                onClick={(e) => {
+                                                    handleDeleteClick(glamping.id, e);
+                                                }}
+                                            />
                                             <FaPaintBrush className='brush'
                                                           onClick={(e) => handleEditClick(glamping.id, e)}
                                             />
@@ -161,7 +157,7 @@ function Explore() {
                                             WebkitLineClamp: 3,
                                             WebkitBoxOrient: 'vertical'
                                         }}>
-                                            {glamping.county || "No description available."}
+                                            {glamping.county || t('no_description')}
                                         </Card.Text>
                                     </Card.Body>
                                 </Card>
@@ -173,4 +169,5 @@ function Explore() {
         </div>
     );
 }
+
 export default Explore;

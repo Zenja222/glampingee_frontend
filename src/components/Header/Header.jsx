@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Nav, Navbar } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Home from '../../views/Home';
 import Explore from '../../views/Explore';
 import GlampingDetail from '../../views/GlampingDetail';
@@ -17,15 +18,17 @@ import GlampingAddView from "../../views/GlampingAddView";
 
 function Header() {
     const location = useLocation();
-
-    // Determine the navbar background class based on the current path
+    const { t, i18n } = useTranslation();
     const isHomePage = location.pathname === '/';
     const navbarClass = isHomePage ? 'fixed-top bg-transparent' : 'fixed-top bg-light-orange navbar-margin';
-    const {currentUser } = useAuth();
+    const { currentUser } = useAuth();
 
-    // Log out function
     const logOut = async () => {
         await signOut(auth);
+    };
+
+    const toggleLanguage = () => {
+        i18n.changeLanguage(i18n.language === 'en' ? 'et' : 'en');
     };
 
     return (
@@ -46,45 +49,47 @@ function Header() {
 
                                 <Nav className='mx-auto d-flex justify-content-center me-5'>
                                     <NavLink to='/' className='nav-link active text-uppercase fw-semibold text-white'>
-                                        Home
+                                        {t('home')}
                                     </NavLink>
                                     <NavLink to='/explore'
                                              className='nav-link active text-uppercase fw-semibold text-white'>
-                                        Explore
+                                        {t('explore')}
                                     </NavLink>
                                 </Nav>
 
-
                                 {currentUser ? (
-                                    <>
-                                        <Nav className='ms-auto d-flex align-items-center'>
-                                            <p className="text-white mb-0" >
-                                                Welcome, {currentUser.email}
-                                            </p>
-                                            <Button onClick={logOut}
-                                                    as={Link}
-                                                    to='/'
-                                                    className='btn text-uppercase fw-semibold ms-2'
-                                                    style={{backgroundColor: '#ff9f00', border: 'none'}}>
-                                                Log Out
-                                            </Button>
-                                        </Nav>
-                                    </>
+                                    <Nav className='ms-auto d-flex align-items-center'>
+                                        <p className="text-white mb-0">
+                                            {t('welcome')}, {currentUser.email}
+                                        </p>
+                                        <Button
+                                            onClick={logOut}
+                                            as={Link}
+                                            to='/'
+                                            className='btn text-uppercase fw-semibold ms-2'
+                                            style={{ backgroundColor: '#ff9f00', border: 'none' }}>
+                                            {t('log_out')}
+                                        </Button>
+                                        <Button
+                                            onClick={toggleLanguage}
+                                            className='btn text-uppercase fw-semibold ms-2'
+                                            style={{ backgroundColor: '#ff9f00', border: 'none' }}>
+                                            {i18n.language === 'en' ? 'ET' : 'EN'}
+                                        </Button>
+                                    </Nav>
                                 ) : (
-                                    <>
-                                        <Nav className='ms-auto d-flex align-items-center'>
-                                            <NavLink to='/login' className='nav-link active text-uppercase text-white'>
-                                                Log In
-                                            </NavLink>
-                                            <Button
-                                                as={Link}
-                                                to='/register'
-                                                className='btn text-uppercase fw-semibold ms-2'
-                                                style={{backgroundColor: '#ff9f00', border: 'none'}}>
-                                                Register
-                                            </Button>
-                                        </Nav>
-                                    </>
+                                    <Nav className='ms-auto d-flex align-items-center'>
+                                        <NavLink to='/login' className='nav-link active text-uppercase text-white'>
+                                            {t('login')}
+                                        </NavLink>
+                                        <Button
+                                            as={Link}
+                                            to='/register'
+                                            className='btn text-uppercase fw-semibold ms-2'
+                                            style={{ backgroundColor: '#ff9f00', border: 'none' }}>
+                                            {t('register')}
+                                        </Button>
+                                    </Nav>
                                 )}
                             </div>
                         </Navbar.Collapse>
@@ -93,23 +98,21 @@ function Header() {
             </Navbar>
 
             <Routes>
-            <Route path='/' element={<Home />} />
+                <Route path='/' element={<Home />} />
                 <Route path='/explore' element={<Explore />} />
                 <Route path='/register' element={<Register />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/glamping/:id' element={<GlampingDetail />} />
                 <Route path="/update/:id" element={
-                        <PrivateRoute requiredRole="admin">
-                            <GlampingEditView />
-                        </PrivateRoute>
-                    }
-                />
+                    <PrivateRoute requiredRole="admin">
+                        <GlampingEditView />
+                    </PrivateRoute>
+                }/>
                 <Route path="/add" element={
                     <PrivateRoute requiredRole="admin">
                         <GlampingAddView />
                     </PrivateRoute>
-                }
-                />
+                }/>
             </Routes>
         </div>
     );
