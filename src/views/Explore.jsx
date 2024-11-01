@@ -1,29 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Dropdown } from 'react-bootstrap';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getAll, filterByField } from "../client/BookingManagement";
-import { deleteGlamping } from "../client/BookingManagement";
+import { useNavigate } from 'react-router-dom';
+import { getAll, filterByField, deleteGlamping } from "../client/BookingManagement";
 import './../Styles/explore.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import { FaTrash, FaPaintBrush } from "react-icons/fa";
 import { useAuth } from "../routes/AuthProvider";
-import { useTranslation } from 'react-i18next'; // Import useTranslation
+import { useTranslation } from 'react-i18next';
 
 function Explore() {
-    const { t } = useTranslation(); // Initialize translation hook
+    const { t, i18n } = useTranslation(); // Initialize translation hook
     const [glampings, setGlampings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [sortField, setSortField] = useState('');
     const [sortDirection, setSortDirection] = useState('asc');
     const navigate = useNavigate();
     const { role } = useAuth();
-    const { id } = useParams();
+
+    const currentLanguage = i18n.language;
 
     useEffect(() => {
         loadGlampings();
     }, []);
 
-    // Load unfiltered glampings
     const loadGlampings = async () => {
         try {
             setLoading(true);
@@ -40,7 +38,7 @@ function Explore() {
         try {
             setLoading(true);
             const data = await filterByField(field, direction);
-            setGlampings(data); // Set filtered glamping data directly
+            setGlampings(data);
         } catch (error) {
             console.error("Failed to load filtered glampings", error);
         } finally {
@@ -58,8 +56,8 @@ function Explore() {
     };
 
     const handleEditClick = (id, e) => {
-        e.stopPropagation(); // Prevent event bubbling
-        navigate(`/update/${id}`); // Change to your edit view path
+        e.stopPropagation();
+        navigate(`/update/${id}`);
     };
 
     const handleCardClick = (id) => {
@@ -149,7 +147,7 @@ function Explore() {
                                         alt="Card image"
                                     />
                                     <Card.Body>
-                                        <Card.Title>{glamping.name}</Card.Title>
+                                        <Card.Title>{glamping.name[currentLanguage] || t('name_not_available')}</Card.Title>
                                         <Card.Text style={{
                                             overflow: 'hidden',
                                             textOverflow: 'ellipsis',
@@ -157,7 +155,8 @@ function Explore() {
                                             WebkitLineClamp: 3,
                                             WebkitBoxOrient: 'vertical'
                                         }}>
-                                            {glamping.county || t('no_description')}
+                                            <span>{glamping.county || t('county_not_available')}</span>
+
                                         </Card.Text>
                                     </Card.Body>
                                 </Card>
@@ -171,3 +170,5 @@ function Explore() {
 }
 
 export default Explore;
+
+
