@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { addRating, getGlampingById } from '../client/BookingManagement';
+import {addRating, getAverageRating, getGlampingById} from '../client/BookingManagement';
 import { Button, Card, Col, Container, Row, Spinner, Alert } from 'react-bootstrap';
 import './../Styles/glampingDetail.css';
 import { useAuth } from "../routes/AuthProvider";
@@ -12,6 +12,7 @@ function GlampingDetail() {
     const { t, i18n } = useTranslation(); // Initialize translation
     const currentLanguage = i18n.language; // Get current language
     const [glamping, setGlamping] = useState(null);
+    const [review, setReview] = useState(null);
     const [userRating, setUserRating] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -30,7 +31,18 @@ function GlampingDetail() {
                 setLoading(false);
             }
         };
-
+        const fetchReviewData = async () => {
+            try {
+                const reviewData = await getAverageRating(id);
+                setReview(reviewData);
+            } catch (error) {
+                console.error("Failed to load review data", error);
+                setError("Failed to load review data");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchReviewData()
         fetchGlamping();
     }, [id, t]);
 
@@ -121,7 +133,7 @@ function GlampingDetail() {
                                             {glamping.price ? `$${glamping.price}` : t('price_not_available')}
                                         </Card.Text>
                                         <Card.Text className='fw-bold'>
-                                            {t('rating')}: {glamping.review ? glamping.review.toFixed(1) : t('no_reviews')}
+                                            {t('rating')}: {review ? review.toFixed(1) : t('no_reviews')}
                                         </Card.Text>
                                         {(role === 'user' || role === 'admin') ? (
                                             <>
