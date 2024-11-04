@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup} from 'firebase/auth';
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ function Login() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const [isSignInActive, setIsSignInActive] = useState(true);
+    const googleProvider = new GoogleAuthProvider();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,6 +22,19 @@ function Login() {
         } catch (error) {
             console.error('Error logging in:', error.message);
             setError('Invalid email or password');
+        }
+    };
+
+    const handleGoogleSignUp = async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const user = result.user;
+            console.log('Google sign-in successful:', user);
+
+            navigate('/');
+        } catch (error) {
+            console.error('Error with Google sign-in:', error.message);
+            alert(error.message);
         }
     };
 
@@ -59,6 +72,9 @@ function Login() {
 
                             <Button variant="success" type="submit" className="w-100">
                                 Login
+                            </Button>
+                            <Button variant="danger" onClick={handleGoogleSignUp} className="w-100 mt-2">
+                                Login with Google
                             </Button>
                         </Form>
                     </Col>

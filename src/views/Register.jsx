@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+    createUserWithEmailAndPassword,
+    GoogleAuthProvider,
+    sendEmailVerification,
+    signInWithPopup
+} from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from "../firebase";
 
@@ -9,6 +14,8 @@ function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const [passwordError, setPasswordError] = useState('');
+    const googleProvider = new GoogleAuthProvider();
 
     const addUserToFirestore = async (user) => {
         try {
@@ -24,16 +31,38 @@ function SignUp() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setPasswordError('');
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
             console.log('User registered:', user);
-
+            await sendEmailVerification(user);
+            alert('Verification email sent! Please check your inbox.');
             await addUserToFirestore(user);
 
             navigate('/');
-        } catch (error) {
+        }catch (error) {
             console.error('Error registering:', error.message);
+            if (error.code === 'auth/weak-password') {
+                setPasswordError('Password should be at least 6 characters long.');
+            } else if (error.code === 'auth/email-already-in-use') {
+                setPasswordError('This email is already registered.');
+            } else {
+                setPasswordError(error.message);
+            }
+        }
+    }
+
+    const handleGoogleSignUp = async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const user = result.user;
+            console.log('Google sign-in successful:', user);
+
+            await addUserToFirestore(user);
+            navigate('/');
+        } catch (error) {
+            console.error('Error with Google sign-in:', error.message);
             alert(error.message);
         }
     };
@@ -66,10 +95,19 @@ function SignUp() {
                                     onChange={(e) => setPassword(e.target.value)}
                                     required
                                 />
+                                {passwordError && (
+                                    <Form.Text className="text-danger">
+                                        {passwordError}
+                                    </Form.Text>
+                                )}
                             </Form.Group>
 
                             <Button variant="success" type="submit" className="w-100">
-                                Sign Up
+                                Sign Up with Email
+                            </Button>
+
+                            <Button variant="danger" onClick={handleGoogleSignUp} className="w-100 mt-2">
+                                Sign Up with Google
                             </Button>
                         </Form>
                     </Col>
