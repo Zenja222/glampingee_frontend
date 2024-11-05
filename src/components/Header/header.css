@@ -2,3 +2,25 @@
     background-color:    #aed6f1
 ; /* Light orange color */
 }
+
+.navbar {
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+
+/* Adjust font size and padding for nav links */
+.navbar .nav-link {
+    font-size: 0.9rem; /* Smaller font size */
+    padding: 0.3rem 0.8rem; /* Less padding */
+}
+
+/* Smaller brand font */
+.navbar-brand {
+    font-size: 1.2rem; /* Adjust brand font size */
+}
+
+/* Compact buttons */
+.btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+}

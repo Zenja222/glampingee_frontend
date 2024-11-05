@@ -47,13 +47,19 @@ const GlampingAddForm = ({ handleGlampingAdd }) => {
 
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
+            // Prepare data to submit with language-specific names and descriptions
             const dataToSubmit = {
                 ...values,
-                languages: [
-                    { ...languageData.eng, language: 'eng' },
-                    { ...languageData.et, language: 'et' }
-                ]
+                name: {
+                    en: languageData.eng.name,
+                    et: languageData.et.name,
+                },
+                description: {
+                    en: languageData.eng.description,
+                    et: languageData.et.description,
+                }
             };
+
             await handleGlampingAdd(dataToSubmit);
             resetForm();
         } catch (error) {
@@ -62,6 +68,7 @@ const GlampingAddForm = ({ handleGlampingAdd }) => {
             setSubmitting(false);
         }
     };
+
 
     return (
         <div className="mt-4">
@@ -89,31 +96,35 @@ const GlampingAddForm = ({ handleGlampingAdd }) => {
                             className="form-control mb-2"
                             name="name"
                             type="text"
-                            placeholder={selectedLanguage === 'et' ? "Sisestage Glampingu nimi" : "Enter Glamping name"}
+                            placeholder={selectedLanguage === 'et' ? "Sisestage Glampingu nimi Eesti keeles" : "Enter Glamping name in English"}
                             onBlur={() => setLanguageData({
                                 ...languageData,
                                 [selectedLanguage]: { ...languageData[selectedLanguage], name: values.name }
                             })}
                         />
-                        {errors.name && touched.name && <div className="error">{errors.name}</div>}
 
                         <Field
                             className="form-control mb-2"
                             name="description"
                             type="text"
-                            placeholder={selectedLanguage === 'et' ? "Sisestage kirjeldus" : "Enter description"}
+                            placeholder={selectedLanguage === 'et' ? "Sisestage kirjeldus Eesti keeles" : "Enter description in English"}
                             onBlur={() => setLanguageData({
                                 ...languageData,
                                 [selectedLanguage]: { ...languageData[selectedLanguage], description: values.description }
                             })}
                         />
+
                         {errors.description && touched.description && <div className="error">{errors.description}</div>}
 
                         <Field
                             className="form-control mb-2"
                             name="linkToBook"
                             type="url"
-                            placeholder="Enter booking link"
+                            placeholder={selectedLanguage === 'et' ? "sisestage broneerimislink" : "Enter booking link"}
+                            onBlur={() => setLanguageData({
+                                ...languageData,
+                                [selectedLanguage]: { ...languageData[selectedLanguage], description: values.description }
+                            })}
                         />
                         {errors.linkToBook && touched.linkToBook && <div className="error">{errors.linkToBook}</div>}
 
@@ -121,7 +132,11 @@ const GlampingAddForm = ({ handleGlampingAdd }) => {
                             className="form-control mb-2"
                             name="county"
                             type="text"
-                            placeholder="Enter county"
+                            placeholder={selectedLanguage === 'et' ? "Sisestage maakond" : "Enter county"}
+                            onBlur={() => setLanguageData({
+                                ...languageData,
+                                [selectedLanguage]: { ...languageData[selectedLanguage], description: values.description }
+                            })}
                         />
                         {errors.county && touched.county && <div className="error">{errors.county}</div>}
 
@@ -129,7 +144,11 @@ const GlampingAddForm = ({ handleGlampingAdd }) => {
                             className="form-control mb-2"
                             name="price"
                             type="number"
-                            placeholder="Enter price"
+                            placeholder={selectedLanguage === 'et' ? "Sisestage hind" : "Enter price"}
+                            onBlur={() => setLanguageData({
+                                ...languageData,
+                                [selectedLanguage]: { ...languageData[selectedLanguage], description: values.description }
+                            })}
                         />
                         {errors.price && touched.price && <div className="error">{errors.price}</div>}
 
@@ -140,9 +159,9 @@ const GlampingAddForm = ({ handleGlampingAdd }) => {
                                         <div key={picIndex} className="mb-2 d-flex align-items-center">
                                             <Field
                                                 className="form-control flex-grow-1"
-                                                placeholder={`Picture URL ${picIndex + 1}`}
                                                 name={`picture[${picIndex}]`}
                                                 type="text"
+                                                placeholder={selectedLanguage === 'et' ? `Sisestage pildi URL ${picIndex + 1}` : `Enter picture URL ${picIndex + 1}`}
                                                 onBlur={() => {
                                                     const updatedPictures = [...values.picture];
                                                     setLanguageData({
@@ -151,6 +170,7 @@ const GlampingAddForm = ({ handleGlampingAdd }) => {
                                                     });
                                                 }}
                                             />
+
                                             <Button
                                                 variant="danger"
                                                 type="button"

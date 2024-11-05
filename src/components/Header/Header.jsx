@@ -33,12 +33,11 @@ function Header() {
 
     return (
         <div>
-            <Navbar expand='lg' className={navbarClass}>
+            <Navbar expand='lg' className={navbarClass} style={{ paddingTop: '0.1rem', paddingBottom: '0.1rem' }}>
                 <Container>
                     <div className='d-flex justify-content-between w-100 align-items-center'>
-
                         <Navbar.Brand>
-                            <Link to='/' className='navbar-brand fw-semibold text-white'>
+                            <Link to='/' className='navbar-brand fw-semibold text-white' style={{ fontSize: '1.2rem' }}>
                                 Glamping.ee
                             </Link>
                         </Navbar.Brand>
@@ -57,40 +56,42 @@ function Header() {
                                     </NavLink>
                                 </Nav>
 
-                                {currentUser ? (
-                                    <Nav className='ms-auto d-flex align-items-center'>
-                                        <p className="text-white mb-0">
-                                            {t('welcome')}, {currentUser.email}
-                                        </p>
-                                        <Button
-                                            onClick={logOut}
-                                            as={Link}
-                                            to='/'
-                                            className='btn text-uppercase fw-semibold ms-2'
-                                            style={{ backgroundColor: '#ff9f00', border: 'none' }}>
-                                            {t('log_out')}
-                                        </Button>
-                                        <Button
-                                            onClick={toggleLanguage}
-                                            className='btn text-uppercase fw-semibold ms-2'
-                                            style={{ backgroundColor: '#ff9f00', border: 'none' }}>
-                                            {i18n.language === 'en' ? 'ET' : 'EN'}
-                                        </Button>
-                                    </Nav>
-                                ) : (
-                                    <Nav className='ms-auto d-flex align-items-center'>
-                                        <NavLink to='/login' className='nav-link active text-uppercase text-white'>
-                                            {t('login')}
-                                        </NavLink>
-                                        <Button
-                                            as={Link}
-                                            to='/register'
-                                            className='btn text-uppercase fw-semibold ms-2'
-                                            style={{ backgroundColor: '#ff9f00', border: 'none' }}>
-                                            {t('register')}
-                                        </Button>
-                                    </Nav>
-                                )}
+                                <Nav className='ms-auto d-flex align-items-center'>
+                                    {currentUser ? (
+                                        <>
+                                            <p className="text-white mb-0">
+                                                {t('welcome')}, {currentUser.email}
+                                            </p>
+                                            <Button
+                                                onClick={logOut}
+                                                as={Link}
+                                                to='/'
+                                                className='btn text-uppercase fw-semibold ms-2'
+                                                style={{ backgroundColor: '#ff9f00', border: 'none' }}>
+                                                {t('log_out')}
+                                            </Button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <NavLink to='/login' className='nav-link active text-uppercase text-white'>
+                                                {t('login')}
+                                            </NavLink>
+                                            <Button
+                                                as={Link}
+                                                to='/register'
+                                                className='btn text-uppercase fw-semibold ms-2'
+                                                style={{ backgroundColor: '#ff9f00', border: 'none' }}>
+                                                {t('register')}
+                                            </Button>
+                                        </>
+                                    )}
+                                    <Button
+                                        onClick={toggleLanguage}
+                                        className='btn text-uppercase fw-semibold ms-2'
+                                        style={{ backgroundColor: '#ff9f00', border: 'none' }}>
+                                        {i18n.language === 'en' ? 'ET' : 'EN'}
+                                    </Button>
+                                </Nav>
                             </div>
                         </Navbar.Collapse>
                     </div>
@@ -119,3 +120,4 @@ function Header() {
 }
 
 export default Header;
+
