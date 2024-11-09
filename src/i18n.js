@@ -68,6 +68,11 @@ const resources = {
             "no_reviews": "Ülevaateid pole veel.",
             "leave_your_rating": "Jätke oma hinnangu:",
             "submit_review": "Esita",
+            "want_to_leave_review": "Kas tahad hinnangut jätta?",
+            "or": "või",
+            "review_submitted": "Teie hinnang on esitatud.",
+            "review_failed": "Hinnangu esitamisel on viga.",
+            "filter": "Filtreeri",
             "name": "Nimi",
             "price": "Hind",
         }
