@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import {addRating, getAverageRating, getGlampingById} from '../client/BookingManagement';
+import { addRating, getAverageRating, getGlampingById } from '../client/BookingManagement';
 import { Button, Card, Col, Container, Row, Spinner, Alert } from 'react-bootstrap';
 import './../Styles/glampingDetail.css';
 import { useAuth } from "../routes/AuthProvider";
@@ -9,15 +9,15 @@ import { useTranslation } from 'react-i18next';
 
 function GlampingDetail() {
     const { id } = useParams();
-    const { t, i18n } = useTranslation(); // Initialize translation
-    const currentLanguage = i18n.language; // Get current language
+    const { t, i18n } = useTranslation();
+    const currentLanguage = i18n.language;
     const [glamping, setGlamping] = useState(null);
     const [review, setReview] = useState(null);
     const [userRating, setUserRating] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const { role } = useAuth();
+    const { currentUser, role, signOut } = useAuth();
 
     useEffect(() => {
         const fetchGlamping = async () => {
@@ -26,11 +26,12 @@ function GlampingDetail() {
                 setGlamping(data);
             } catch (error) {
                 console.error("Failed to load glamping details", error);
-                setError(t("error.load_glamping")); // Use translation for error message
+                setError(t("error.load_glamping"));
             } finally {
                 setLoading(false);
             }
         };
+
         const fetchReviewData = async () => {
             try {
                 const reviewData = await getAverageRating(id);
@@ -42,7 +43,8 @@ function GlampingDetail() {
                 setLoading(false);
             }
         };
-        fetchReviewData()
+
+        fetchReviewData();
         fetchGlamping();
     }, [id, t]);
 
@@ -135,7 +137,8 @@ function GlampingDetail() {
                                         <Card.Text className='fw-bold'>
                                             {t('rating')}: {review ? review.toFixed(1) : t('no_reviews')}
                                         </Card.Text>
-                                        {(role === 'user' || role === 'admin') ? (
+
+                                        {currentUser ? (
                                             <>
                                                 <Card.Text>{t('leave_your_rating')}</Card.Text>
                                                 <Rating
@@ -146,6 +149,9 @@ function GlampingDetail() {
                                                     onChange={handleRatingChange}
                                                 />
                                                 <Button onClick={submitReview} className="mt-2">{t('submit_review')}</Button>
+                                                {role === 'admin' && (
+                                                    <Button onClick={signOut} className="mt-2">{t('sign_out')}</Button>
+                                                )}
                                             </>
                                         ) : (
                                             <Card.Text>
@@ -167,4 +173,6 @@ function GlampingDetail() {
 }
 
 export default GlampingDetail;
+
+
 

@@ -68,6 +68,8 @@ const resources = {
             "no_reviews": "Ülevaateid pole veel.",
             "leave_your_rating": "Jätke oma hinnang:",
             "submit_review": "Esita",
+            "name": "Nimi",
+            "price": "Hind",
         }
     }
 };
