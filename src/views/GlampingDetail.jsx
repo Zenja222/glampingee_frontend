@@ -152,6 +152,19 @@ function GlampingDetail() {
                                                 {role === 'admin' && (
                                                     <Button onClick={signOut} className="mt-2">{t('sign_out')}</Button>
                                                 )}
+                                                {/* Book Now Button positioned below review section */}
+                                                {glamping.linkToBook && (
+                                                    <div className="mt-3">
+                                                        <Button
+                                                            href={glamping.linkToBook}
+                                                            target="_blank"
+                                                            variant="primary"
+                                                            className="w-100 mt-2"
+                                                        >
+                                                            {t('book_now')}
+                                                        </Button>
+                                                    </div>
+                                                )}
                                             </>
                                         ) : (
                                             <Card.Text>
@@ -173,6 +186,3 @@ function GlampingDetail() {
 }
 
 export default GlampingDetail;
-
-
-

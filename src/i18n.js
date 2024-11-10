@@ -37,12 +37,12 @@ const resources = {
             "add_new_glamping": "Add new glamping",
             "name": "Name",
             "price": "Price",
-            // Other keys as necessary...
+            "book_now": "Book now",
+
         }
     },
     et: {
         translation: {
-            // Existing translations...
             "home": "Avaleht",
             "explore": "Avasta",
             "login": "Logi sisse",
@@ -75,6 +75,8 @@ const resources = {
             "filter": "Filtreeri",
             "name": "Nimi",
             "price": "Hind",
+            "book_now": "Broneeri kohe",
+
         }
     }
 };
