@@ -9,8 +9,10 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from "../firebase";
+import { useTranslation } from 'react-i18next';
 
 function SignUp() {
+    const { t } = useTranslation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -72,14 +74,14 @@ function SignUp() {
             <Container className="d-flex flex-column justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
                 <Row className="w-100">
                     <Col md={{ span: 6, offset: 3 }}>
-                        <h2 className="text-center mb-4">Sign Up</h2>
+                        <h2 className="text-center mb-4">{t('sign_up')}</h2>
 
                         <Form onSubmit={handleSubmit}>
                             <Form.Group controlId="formEmail" className="mb-3">
-                                <Form.Label>Email address</Form.Label>
+                                <Form.Label>{t('email_address')}</Form.Label>
                                 <Form.Control
                                     type="email"
-                                    placeholder="Enter your email"
+                                    placeholder={t('enter_email')}
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
@@ -87,10 +89,10 @@ function SignUp() {
                             </Form.Group>
 
                             <Form.Group controlId="formPassword" className="mb-3">
-                                <Form.Label>Password</Form.Label>
+                                <Form.Label>{t('password')}</Form.Label>
                                 <Form.Control
                                     type="password"
-                                    placeholder="Enter your password"
+                                    placeholder={t('enter_password')}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     required
@@ -103,11 +105,11 @@ function SignUp() {
                             </Form.Group>
 
                             <Button variant="success" type="submit" className="w-100">
-                                Sign Up with Email
+                                {t('sign_up')}
                             </Button>
 
                             <Button variant="danger" onClick={handleGoogleSignUp} className="w-100 mt-2">
-                                Sign Up with Google
+                                {t('sign_up_with_google')}
                             </Button>
                         </Form>
                     </Col>

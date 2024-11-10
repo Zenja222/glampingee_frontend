@@ -38,7 +38,14 @@ const resources = {
             "name": "Name",
             "price": "Price",
             "book_now": "Book now",
-
+            "email_address": "Email address",
+            "enter_email": "Enter your email",
+            "password": "Password",
+            "enter_password": "Enter your password",
+            "login_with_google": "Log in with Google",
+            "sign_up": "Sign up with your email",
+            "sign_up_with_google": "Sign up with Google",
+            // Other keys as necessary...
         }
     },
     et: {
@@ -76,6 +83,13 @@ const resources = {
             "name": "Nimi",
             "price": "Hind",
             "book_now": "Broneeri kohe",
+            "email_address": "Meiliaadress",
+            "enter_email": "Sisesta oma meiliaadress",
+            "password": "Salasõna",
+            "enter_password": "Sisesta oma salasõna",
+            "login_with_google": "Logi sisse Google'i kontoga",
+            "sign_up": "Registreeri oma meiliaadressiga",
+            "sign_up_with_google": "Registreeri Google'i kontoga",
 
         }
     }

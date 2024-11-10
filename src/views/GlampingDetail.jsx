@@ -114,14 +114,14 @@ function GlampingDetail() {
                                                 disabled={currentImageIndex === 0}
                                                 className="me-2"
                                             >
-                                                {t('navigation.previous')}
+                                                {t('previous')}
                                             </Button>
                                             <Button
                                                 variant="secondary"
                                                 onClick={handleNextImage}
                                                 disabled={currentImageIndex === glamping.picture.length - 1}
                                             >
-                                                {t('navigation.next')}
+                                                {t('next')}
                                             </Button>
                                         </div>
                                     )}
@@ -132,7 +132,7 @@ function GlampingDetail() {
                                         <Card.Subtitle className='mb-2'>{glamping.county || t('county_not_available')}</Card.Subtitle>
                                         <Card.Text>{glamping.description[currentLanguage] || t('no_description')}</Card.Text>
                                         <Card.Text className='fw-bold'>
-                                            {glamping.price ? `$${glamping.price}` : t('price_not_available')}
+                                            {glamping.price ? `€${glamping.price}` : t('price_not_available')}
                                         </Card.Text>
                                         <Card.Text className='fw-bold'>
                                             {t('rating')}: {review ? review.toFixed(1) : t('no_reviews')}

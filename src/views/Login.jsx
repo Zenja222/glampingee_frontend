@@ -3,8 +3,10 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import {GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup} from 'firebase/auth';
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function Login() {
+    const { t } = useTranslation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -43,16 +45,16 @@ function Login() {
             <Container className="d-flex flex-column justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
                 <Row className="w-100">
                     <Col md={{ span: 6, offset: 3 }}>
-                        <h2 className="text-center mb-4">Login</h2>
+                        <h2 className="text-center mb-4">{t('login')}</h2>
                         {error && <p className="text-danger text-center">{error}</p>}
 
                         <Form onSubmit={handleSubmit}>
 
                             <Form.Group controlId="formEmail" className="mb-3">
-                                <Form.Label>Email address</Form.Label>
+                                <Form.Label>{t('email_address')}</Form.Label>
                                 <Form.Control
                                     type="email"
-                                    placeholder="Enter your email"
+                                    placeholder={t('enter_email')}
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)} // Обновляем email при вводе
                                     required
@@ -60,10 +62,10 @@ function Login() {
                             </Form.Group>
 
                             <Form.Group controlId="formPassword" className="mb-3">
-                                <Form.Label>Password</Form.Label>
+                                <Form.Label>{t('password')}</Form.Label>
                                 <Form.Control
                                     type="password"
-                                    placeholder="Enter your password"
+                                    placeholder={t('enter_password')}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)} // Обновляем пароль при вводе
                                     required
@@ -71,10 +73,10 @@ function Login() {
                             </Form.Group>
 
                             <Button variant="success" type="submit" className="w-100">
-                                Login
+                                {t('login')}
                             </Button>
                             <Button variant="danger" onClick={handleGoogleSignUp} className="w-100 mt-2">
-                                Login with Google
+                                {t('login_with_google')}
                             </Button>
                         </Form>
                     </Col>
