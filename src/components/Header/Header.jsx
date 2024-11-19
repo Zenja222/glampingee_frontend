@@ -59,7 +59,7 @@ function Header() {
                                 <Nav className='ms-auto d-flex align-items-center'>
                                     {currentUser ? (
                                         <>
-                                            <p className="text-white mb-0">
+                                            <p id="welcome_current_user" className="text-white mb-0">
                                                 {t('welcome')}, {currentUser.email}
                                             </p>
                                             <Button
