@@ -61,7 +61,7 @@ function Home() {
                     backgroundPosition: 'center'
                 }}
             >
-                <div className='container text-center mb-5'>
+                <div className='container text-center mt-2'>
                     <h2 className='mb-0 fw-bold'>{t('welcome_to')}</h2>
                     <h1 className='mb-4 fw-bold'>{t('est_glampings')}</h1>
                     <MenuBtn/>

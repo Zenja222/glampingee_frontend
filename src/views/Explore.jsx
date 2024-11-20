@@ -96,7 +96,7 @@ function Explore() {
     return (
         <div className='main-content' style={{ marginTop: '90px' }}>
             <Container className="my-5">
-                <div className="d-flex mb-3">
+                <div className="d-flex mb-3 align-items-center">
                     <Dropdown className="me-2">
                         <Dropdown.Toggle variant="primary" id="sort-field-dropdown">
                             {sortField || t('select_sort_field')}

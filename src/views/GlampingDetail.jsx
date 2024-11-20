@@ -17,7 +17,7 @@ function GlampingDetail() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const { currentUser, role, signOut } = useAuth();
+    const { currentUser } = useAuth();
 
     useEffect(() => {
         const fetchGlamping = async () => {
@@ -149,9 +149,6 @@ function GlampingDetail() {
                                                     onChange={handleRatingChange}
                                                 />
                                                 <Button onClick={submitReview} className="mt-2">{t('submit_review')}</Button>
-                                                {role === 'admin' && (
-                                                    <Button onClick={signOut} className="mt-2">{t('sign_out')}</Button>
-                                                )}
                                                 {glamping.linkToBook && (
                                                     <div className="mt-3">
                                                         <Button
