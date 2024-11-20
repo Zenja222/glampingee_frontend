@@ -192,15 +192,28 @@ function Explore() {
                                         alt="Card image"
                                     />
                                     <Card.Body>
-                                        <Card.Title>{glamping.name[currentLanguage] || t('name_not_available')}</Card.Title>
-                                        <Card.Text style={{
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            display: '-webkit-box',
-                                            WebkitLineClamp: 3,
-                                            WebkitBoxOrient: 'vertical'
-                                        }}>
-                                            <span>{glamping.county || t('county_not_available')}</span>
+                                        <Card.Title>
+                                            {glamping.name[currentLanguage] || t('name_not_available')}
+                                        </Card.Title>
+                                        <Card.Text
+                                            style={{
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                display: '-webkit-box',
+                                                WebkitLineClamp: 3,
+                                                WebkitBoxOrient: 'vertical',
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    display: 'flex',
+                                                    justifyContent: 'space-evenly',
+                                                    alignItems: 'center',
+                                                }}
+                                            >
+                                                <span>{glamping.county || t('county_not_available')}</span>
+                                                <span>{glamping.price ? `${glamping.price}€` : t('price_not_available')}</span>
+                                            </div>
                                         </Card.Text>
                                     </Card.Body>
                                 </Card>
