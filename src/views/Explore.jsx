@@ -8,7 +8,7 @@ import { useAuth } from "../routes/AuthProvider";
 import { useTranslation } from 'react-i18next';
 
 function Explore() {
-    const { t, i18n } = useTranslation(); // Initialize translation hook
+    const { t, i18n } = useTranslation();
     const [glampings, setGlampings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [sortField, setSortField] = useState('');
@@ -128,26 +128,26 @@ function Explore() {
 
                     {/* Search bar */}
                     <div className="ms-auto">
-                    <Form className="d-flex mb-3" onSubmit={handleSearch}>
-                        <Form.Control
-                            type="text"
-                            placeholder="Search"
-                            value={searchText}
-                            onChange={(e) => setSearchText(e.target.value)}
-                            className="me-2"
-                        />
-                        <Button type="submit" variant="primary">
-                            Search
-                        </Button>
-                        <Button
-                            type="button"
-                            variant="danger"
-                            onClick={handleClearSearch}
-                        >
-                            X
-                        </Button>
+                        <Form className="d-flex mb-3" onSubmit={handleSearch}>
+                            <Form.Control
+                                type="text"
+                                placeholder="Search"
+                                value={searchText}
+                                onChange={(e) => setSearchText(e.target.value)}
+                                className="me-2"
+                            />
+                            <Button type="submit" variant="primary">
+                                Search
+                            </Button>
+                            <Button
+                                type="button"
+                                variant="danger"
+                                onClick={handleClearSearch}
+                            >
+                                X
+                            </Button>
 
-                    </Form>
+                        </Form>
                     </div>
 
                     {role === 'admin' && (
@@ -212,5 +212,4 @@ function Explore() {
         </div>
     );
 }
-
 export default Explore;
