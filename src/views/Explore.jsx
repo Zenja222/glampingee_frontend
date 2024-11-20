@@ -8,7 +8,7 @@ import { useAuth } from "../routes/AuthProvider";
 import { useTranslation } from 'react-i18next';
 
 function Explore() {
-    const { t, i18n } = useTranslation(); // Initialize translation hook
+    const { t, i18n } = useTranslation();
     const [glampings, setGlampings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [sortField, setSortField] = useState('');
@@ -148,25 +148,29 @@ function Explore() {
                                     />
                                     <Card.Body>
                                         <Card.Title>{glamping.name[currentLanguage] || t('name_not_available')}</Card.Title>
-                                        <Card.Text style={{
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            display: '-webkit-box',
-                                            WebkitLineClamp: 3,
-                                            WebkitBoxOrient: 'vertical'
-                                        }}>
-                                            <span>{glamping.county || t('county_not_available')}</span>
-
-                                        </Card.Text>
+                                        <Card.Text
+                                            style={{
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                display: '-webkit-box',
+                                                WebkitLineClamp: 3,
+                                                WebkitBoxOrient: 'vertical'
+                                            }}
+                                        >
+                                            <div className="d-flex justify-content-center align-items-center" style={{ gap: '0.5rem' }}>
+                                                <span>{glamping.county || t('county_not_available')}</span>
+                                                <span>{glamping.price ? `${glamping.price} €` : t('price_not_available')}</span>
+                                            </div>
+                                            </Card.Text>
                                     </Card.Body>
                                 </Card>
                             </Col>
-                        ))}
+                            ))}
                     </Row>
                 )}
             </Container>
         </div>
-    );
+);
 }
 
 export default Explore;

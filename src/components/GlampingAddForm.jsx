@@ -57,8 +57,12 @@ const GlampingAddForm = ({ handleGlampingAdd }) => {
                 description: {
                     en: languageData.eng.description,
                     et: languageData.et.description,
-                }
+                },
+                price: Number(values.price),
             };
+            console.log("Final Data to Submit:", dataToSubmit);
+            console.log("Price before submitting:", values.price, typeof values.price);
+            console.log("Converted price:", Number(values.price), typeof Number(values.price));
 
             await handleGlampingAdd(dataToSubmit);
             resetForm();
@@ -145,12 +149,22 @@ const GlampingAddForm = ({ handleGlampingAdd }) => {
                             name="price"
                             type="number"
                             placeholder={selectedLanguage === 'et' ? "Sisestage hind" : "Enter price"}
-                            onBlur={() => setLanguageData({
-                                ...languageData,
-                                [selectedLanguage]: { ...languageData[selectedLanguage], description: values.description }
-                            })}
+                            onChange={(e) => {
+                                const value = Number(e.target.value); // Convert input to a number
+                                setFieldValue('price', value); // Update Formik's state
+                            }}
+                            onBlur={() =>
+                                setLanguageData({
+                                    ...languageData,
+                                    [selectedLanguage]: {
+                                        ...languageData[selectedLanguage],
+                                        price: values.price // Update `price` in `languageData` for the current language
+                                    }
+                                })
+                            }
                         />
                         {errors.price && touched.price && <div className="error">{errors.price}</div>}
+
 
                         <FieldArray name="picture">
                             {({ remove, push }) => (

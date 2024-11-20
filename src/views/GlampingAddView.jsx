@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import GlampingAddForm from "../components/GlampingAddForm";
-import { addGlamping } from "../client/BookingManagement"; // Assuming this function is implemented to add a glamping entry
+import { addGlamping } from "../client/BookingManagement";
 
 function GlampingAddView() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Set loading to false after the component mounts to display the form
         setLoading(false);
     }, []);
 

@@ -30,13 +30,13 @@ function GlampingEditView() {
     const handleGlampingUpdate = async (glamping) => {
         setLoading(true);
         try {
-            const updatedGlamping = await updateGlamping(glamping.id, glamping);// Update the state with the new data
+            const updatedGlamping = await updateGlamping(glamping.id, glamping);
             console.log(updatedGlamping);
         } catch (error) {
             console.error("Failed to update glamping details", error);
             setError("Failed to update glamping details");
         } finally {
-            setLoading(false); // Set loading state to false after update attempt
+            setLoading(false);
         }
     };
 

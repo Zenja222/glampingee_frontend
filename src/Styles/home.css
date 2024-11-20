@@ -1,26 +1,13 @@
-/*.video-bg {*/
-/*    position: relative;*/
-/*    overflow: hidden;*/
-/*    width: 100%;*/
-/*    height: 100vh;*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*    justify-content: center;*/
-/*    color: white;*/
-/*    text-align: center;*/
-/*}*/
+.carousel-container {
+    width: 100%;
+    max-width: 1000px; /* Optional: Restrict max width for large screens */
+    margin: 0 auto;
+}
 
-/*.background-video {*/
-/*    position: absolute;*/
-/*    top: 0;*/
-/*    left: 0;*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*    object-fit: cover;*/
-/*    z-index: -1;*/
-/*}*/
+.carousel-item-container img {
+    transition: transform 0.3s ease;
+}
 
-/*.container {*/
-/*    position: relative;*/
-/*    z-index: 1;*/
-/*}*/
+.carousel-item-container:hover img {
+    transform: scale(1.05);
+}
