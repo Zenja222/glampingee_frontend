@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button, Dropdown } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Dropdown, Form } from 'react-bootstrap'; // Use Form from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
-import { getAll, filterByField, deleteGlamping } from "../client/BookingManagement";
+import { getAll, filterByField, deleteGlamping, searchByName } from "../client/BookingManagement";
 import './../Styles/explore.css';
 import { FaTrash, FaPaintBrush } from "react-icons/fa";
 import { useAuth } from "../routes/AuthProvider";
@@ -14,6 +14,7 @@ function Explore() {
     const [sortField, setSortField] = useState('');
     const [sortDirection, setSortDirection] = useState('asc');
     const navigate = useNavigate();
+    const [searchText, setSearchText] = useState('');
     const { role } = useAuth();
 
     const currentLanguage = i18n.language;
@@ -33,6 +34,20 @@ function Explore() {
             setLoading(false);
         }
     };
+
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        try {
+            setLoading(true);
+            const data = await searchByName(searchText, currentLanguage);
+            setGlampings(data);
+        } catch (error) {
+            console.error("Failed to search glampings", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     const loadFilteredGlampings = async (field, direction) => {
         try {
@@ -73,6 +88,11 @@ function Explore() {
         deleteGlampingById(id);
     };
 
+    const handleClearSearch = () => {
+        setSearchText('');
+        loadGlampings();
+    };
+
     return (
         <div className='main-content' style={{ marginTop: '90px' }}>
             <Container className="my-5">
@@ -105,6 +125,31 @@ function Explore() {
                     >
                         {t('filter')}
                     </Button>
+
+                    {/* Search bar */}
+                    <div className="ms-auto">
+                    <Form className="d-flex mb-3" onSubmit={handleSearch}>
+                        <Form.Control
+                            type="text"
+                            placeholder="Search"
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
+                            className="me-2"
+                        />
+                        <Button type="submit" variant="primary">
+                            Search
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="danger"
+                            onClick={handleClearSearch}
+                        >
+                            X
+                        </Button>
+
+                    </Form>
+                    </div>
+
                     {role === 'admin' && (
                         <div className="ms-auto">
                             <Button
@@ -156,7 +201,6 @@ function Explore() {
                                             WebkitBoxOrient: 'vertical'
                                         }}>
                                             <span>{glamping.county || t('county_not_available')}</span>
-
                                         </Card.Text>
                                     </Card.Body>
                                 </Card>
@@ -170,5 +214,3 @@ function Explore() {
 }
 
 export default Explore;
-
-
