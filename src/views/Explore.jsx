@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Dropdown, Form } from 'react-bootstrap'; // Use Form from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
-import { getAll, filterByField, deleteGlamping, searchByName } from "../client/BookingManagement";
+import {getAll, filterByField, deleteGlamping, searchByName, filterByPriceRange} from "../client/BookingManagement";
 import './../Styles/explore.css';
 import { FaTrash, FaPaintBrush } from "react-icons/fa";
 import { useAuth } from "../routes/AuthProvider";
@@ -12,6 +12,8 @@ function Explore() {
     const [glampings, setGlampings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [sortField, setSortField] = useState('');
+    const [minPrice, setMinPrice] = useState('');
+    const [maxPrice, setMaxPrice] = useState('');
     const [sortDirection, setSortDirection] = useState('asc');
     const navigate = useNavigate();
     const [searchText, setSearchText] = useState('');
@@ -22,6 +24,26 @@ function Explore() {
     useEffect(() => {
         loadGlampings();
     }, []);
+
+    useEffect(() => {
+        if (minPrice || maxPrice) {
+            filterByPriceRangeEffect();
+        } else {
+            loadGlampings();
+        }
+    }, [minPrice, maxPrice]);
+
+    const filterByPriceRangeEffect = async () => {
+        try {
+            setLoading(true);
+            const data = await filterByPriceRange(minPrice, maxPrice);
+            setGlampings(data);
+        } catch (error) {
+            console.error("Failed to filter glampings by price range", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const loadGlampings = async () => {
         try {
@@ -117,7 +139,6 @@ function Explore() {
                             <Dropdown.Item onClick={() => setSortDirection('desc')}>{t('descending')}</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-
                     <Button
                         variant="success"
                         onClick={() => loadFilteredGlampings(sortField, sortDirection)}
@@ -125,7 +146,24 @@ function Explore() {
                     >
                         {t('filter')}
                     </Button>
-
+                    {/* Filter by price start */}
+                    <Form className="d-flex mb-3">
+                        <Form.Control
+                            type="number"
+                            placeholder={t('min_price')}
+                            value={minPrice}
+                            onChange={(e) => setMinPrice(e.target.value)}
+                            className="me-2"
+                        />
+                        <Form.Control
+                            type="number"
+                            placeholder={t('max_price')}
+                            value={maxPrice}
+                            onChange={(e) => setMaxPrice(e.target.value)}
+                            className="me-2"
+                        />
+                    </Form>
+                    {/* Filter by price end */}
                     {/* Search bar */}
                     <div className="ms-auto">
                         <Form className="d-flex mb-3" onSubmit={handleSearch}>
