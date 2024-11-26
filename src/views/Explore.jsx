@@ -114,7 +114,7 @@ function Explore() {
             <Container className="my-5">
                 <div className="d-flex mb-3 align-items-center">
                     {/* Filters Button */}
-                    <Button variant="primary" onClick={toggleModal}>
+                    <Button variant="primary" id="filters" onClick={toggleModal}>
                         {showModal ? t('hide_filters') : t('filters')}
                     </Button>
 
@@ -122,13 +122,14 @@ function Explore() {
                     <div className="ms-auto">
                         <Form className="d-flex mb-3" onSubmit={handleSearch}>
                             <Form.Control
+                                id = "search-text"
                                 type="text"
                                 placeholder="Search"
                                 value={searchText}
                                 onChange={(e) => setSearchText(e.target.value)}
                                 className="me-2"
                             />
-                            <Button type="submit" variant="primary">
+                            <Button id = "search-btn" type="submit" variant="primary">
                                 Search
                             </Button>
                             <Button
@@ -286,7 +287,7 @@ function Explore() {
                     <Button variant="secondary" onClick={toggleModal}>
                         {t('close')}
                     </Button>
-                    <Button variant="primary" onClick={applyFilters}>
+                    <Button variant="primary" id = "apply-filters" onClick={applyFilters}>
                         {t('apply_filters')}
                     </Button>
                 </Modal.Footer>
