@@ -45,6 +45,11 @@ const resources = {
             "login_with_google": "Log in with Google",
             "sign_up": "Sign up with your email",
             "sign_up_with_google": "Sign up with Google",
+            "apply_filters" : "Apply filters",
+            "price_range" : "Price range",
+            "filters" : "Filters",
+            "search" : "Search",
+            "close" : "Close"
             // Other keys as necessary...
         }
     },
@@ -90,6 +95,11 @@ const resources = {
             "login_with_google": "Logi sisse Google'i kontoga",
             "sign_up": "Registreeri oma meiliaadressiga",
             "sign_up_with_google": "Registreeri Google'i kontoga",
+            "apply_filters" : "Filtreid rakendama",
+            "price_range" : "Hinnavahemik",
+            "filters" : "Filtrid",
+            "search" : "Otsi",
+            "close" : "Sulgeda"
 
         }
     }

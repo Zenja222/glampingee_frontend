@@ -1,23 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button, Dropdown, Form } from 'react-bootstrap'; // Use Form from 'react-bootstrap'
+import { Container, Row, Col, Card, Button, Dropdown, Modal, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import {getAll, filterByField, deleteGlamping, searchByName, filterByPriceRange} from "../client/BookingManagement";
+import { getAll, filterByField, deleteGlamping, searchByName, filterByPriceRange } from "../client/BookingManagement";
 import './../Styles/explore.css';
 import { FaTrash, FaPaintBrush } from "react-icons/fa";
 import { useAuth } from "../routes/AuthProvider";
 import { useTranslation } from 'react-i18next';
+import { Range } from 'react-range'; // Import Range slider
 
 function Explore() {
     const { t, i18n } = useTranslation();
     const [glampings, setGlampings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [sortField, setSortField] = useState('');
-    const [minPrice, setMinPrice] = useState('');
-    const [maxPrice, setMaxPrice] = useState('');
     const [sortDirection, setSortDirection] = useState('asc');
     const navigate = useNavigate();
     const [searchText, setSearchText] = useState('');
     const { role } = useAuth();
+
+    // Modal state for filters
+    const [showFiltersModal, setShowFiltersModal] = useState(false);
+
+    // State for slider values, without triggering immediate re-render
+    const [tempMinPrice, setTempMinPrice] = useState(0);
+    const [tempMaxPrice, setTempMaxPrice] = useState(1000);
+
+    // Actual price filters that are applied when clicking 'Apply Filters'
+    const [minPrice, setMinPrice] = useState(0);
+    const [maxPrice, setMaxPrice] = useState(1000);
 
     const currentLanguage = i18n.language;
 
@@ -26,24 +36,24 @@ function Explore() {
     }, []);
 
     useEffect(() => {
+        const filterByPriceRangeEffect = async () => {
+            try {
+                setLoading(true);
+                const data = await filterByPriceRange(minPrice, maxPrice);
+                setGlampings(data);
+            } catch (error) {
+                console.error("Failed to filter glampings by price range", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         if (minPrice || maxPrice) {
             filterByPriceRangeEffect();
         } else {
             loadGlampings();
         }
     }, [minPrice, maxPrice]);
-
-    const filterByPriceRangeEffect = async () => {
-        try {
-            setLoading(true);
-            const data = await filterByPriceRange(minPrice, maxPrice);
-            setGlampings(data);
-        } catch (error) {
-            console.error("Failed to filter glampings by price range", error);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const loadGlampings = async () => {
         try {
@@ -69,7 +79,6 @@ function Explore() {
             setLoading(false);
         }
     };
-
 
     const loadFilteredGlampings = async (field, direction) => {
         try {
@@ -115,67 +124,38 @@ function Explore() {
         loadGlampings();
     };
 
+    const handleFilterApply = () => {
+        // Apply the filter only when the "Apply Filters" button is clicked
+        setMinPrice(tempMinPrice);
+        setMaxPrice(tempMaxPrice);
+        loadFilteredGlampings(sortField, sortDirection);
+
+        // Reset sort field and direction after applying filters
+        setSortField('');
+        setSortDirection('');
+
+        setShowFiltersModal(false); // Close the modal after applying
+    };
+
     return (
         <div className='main-content' style={{ marginTop: '90px' }}>
             <Container className="my-5">
                 <div className="d-flex mb-3 align-items-center">
-                    <Dropdown className="me-2">
-                        <Dropdown.Toggle variant="primary" id="sort-field-dropdown">
-                            {sortField || t('select_sort_field')}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => setSortField('name')}>{t('name')}</Dropdown.Item>
-                            <Dropdown.Item onClick={() => setSortField('price')}>{t('price')}</Dropdown.Item>
-                            <Dropdown.Item onClick={() => setSortField('county')}>{t('county')}</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-
-                    <Dropdown className="me-2">
-                        <Dropdown.Toggle variant="primary" id="sort-direction-dropdown">
-                            {sortDirection === 'asc' ? t('ascending') : t('descending')}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => setSortDirection('asc')}>{t('ascending')}</Dropdown.Item>
-                            <Dropdown.Item onClick={() => setSortDirection('desc')}>{t('descending')}</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <Button
-                        variant="success"
-                        onClick={() => loadFilteredGlampings(sortField, sortDirection)}
-                        disabled={!sortField}
-                    >
-                        {t('filter')}
+                    <Button variant="primary" onClick={() => setShowFiltersModal(true)}>
+                        {t('filters')}
                     </Button>
-                    {/* Filter by price start */}
-                    <Form className="d-flex mb-3">
-                        <Form.Control
-                            type="number"
-                            placeholder={t('min_price')}
-                            value={minPrice}
-                            onChange={(e) => setMinPrice(e.target.value)}
-                            className="me-2"
-                        />
-                        <Form.Control
-                            type="number"
-                            placeholder={t('max_price')}
-                            value={maxPrice}
-                            onChange={(e) => setMaxPrice(e.target.value)}
-                            className="me-2"
-                        />
-                    </Form>
-                    {/* Filter by price end */}
                     {/* Search bar */}
                     <div className="ms-auto">
                         <Form className="d-flex mb-3" onSubmit={handleSearch}>
                             <Form.Control
                                 type="text"
-                                placeholder="Search"
+                                placeholder={t("search")}
                                 value={searchText}
                                 onChange={(e) => setSearchText(e.target.value)}
                                 className="me-2"
                             />
                             <Button type="submit" variant="primary">
-                                Search
+                                {t("search")}
                             </Button>
                             <Button
                                 type="button"
@@ -184,7 +164,6 @@ function Explore() {
                             >
                                 X
                             </Button>
-
                         </Form>
                     </div>
 
@@ -260,7 +239,94 @@ function Explore() {
                     </Row>
                 )}
             </Container>
+
+            {/* Filters Modal */}
+            <Modal show={showFiltersModal} onHide={() => setShowFiltersModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{t('filters')}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Dropdown className="mb-3">
+                        <Dropdown.Toggle variant="primary" id="sort-field-dropdown">
+                            {sortField || t('select_sort_field')}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => setSortField('name')}>{t('name')}</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setSortField('county')}>{t('county')}</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+
+                    <Dropdown className="mb-3">
+                        <Dropdown.Toggle variant="primary" id="sort-direction-dropdown">
+                            {sortDirection === '' ? t('select_sort_field') : (sortDirection === 'asc' ? t('ascending') : t('descending'))}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => setSortDirection('asc')}>
+                                {t('ascending')}
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={() => setSortDirection('desc')}>
+                                {t('descending')}
+                            </Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+
+                    {/* Price Range Slider */}
+                    <div>
+                        <h5>{t('price_range')}</h5>
+                        <Range
+                            step={10}
+                            min={0}
+                            max={1000}
+                            values={[tempMinPrice, tempMaxPrice]} // Use the tempMinPrice and tempMaxPrice values
+                            onChange={(values) => {
+                                setTempMinPrice(values[0]);  // Update the min value when slider changes
+                                setTempMaxPrice(values[1]);  // Update the max value when slider changes
+                            }}
+                            renderTrack={({ props, children }) => (
+                                <div
+                                    {...props}
+                                    style={{
+                                        ...props.style,
+                                        height: '6px',
+                                        borderRadius: '3px',
+                                        background: 'gray',
+                                    }}
+                                >
+                                    {children}
+                                </div>
+                            )}
+                            renderThumb={({ props }) => (
+                                <div
+                                    {...props}
+                                    style={{
+                                        ...props.style,
+                                        height: '15px',
+                                        width: '15px',
+                                        borderRadius: '50%',
+                                        backgroundColor: '#2C3E50',
+                                    }}
+                                />
+                            )}
+                        />
+                        {/* Display the min and max price values */}
+                        <div className="d-flex justify-content-between">
+                            <span>{t('min')}: {tempMinPrice}€</span> {/* Display min price */}
+                            <span>{t('max')}: {tempMaxPrice}€</span> {/* Display max price */}
+                        </div>
+
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowFiltersModal(false)}>
+                        {t('close')}
+                    </Button>
+                    <Button variant="primary" onClick={handleFilterApply}>
+                        {t('apply_filters')}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
+
 export default Explore;
