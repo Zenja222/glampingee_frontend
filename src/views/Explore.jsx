@@ -141,20 +141,21 @@ function Explore() {
         <div className='main-content' style={{ marginTop: '90px' }}>
             <Container className="my-5">
                 <div className="d-flex mb-3 align-items-center">
-                    <Button variant="primary" onClick={() => setShowFiltersModal(true)}>
+                    <Button variant="primary" id="filters" onClick={() => setShowFiltersModal(true)}>
                         {t('filters')}
                     </Button>
                     {/* Search bar */}
                     <div className="ms-auto">
                         <Form className="d-flex mb-3" onSubmit={handleSearch}>
                             <Form.Control
+                                id="search-text"
                                 type="text"
                                 placeholder={t("search")}
                                 value={searchText}
                                 onChange={(e) => setSearchText(e.target.value)}
                                 className="me-2"
                             />
-                            <Button type="submit" variant="primary">
+                            <Button type="submit" id="search-btn" variant="primary">
                                 {t("search")}
                             </Button>
                             <Button
@@ -320,7 +321,7 @@ function Explore() {
                     <Button variant="secondary" onClick={() => setShowFiltersModal(false)}>
                         {t('close')}
                     </Button>
-                    <Button variant="primary" onClick={handleFilterApply}>
+                    <Button variant="primary" id="apply-filters" onClick={handleFilterApply}>
                         {t('apply_filters')}
                     </Button>
                 </Modal.Footer>
